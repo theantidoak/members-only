@@ -3,11 +3,24 @@ import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import { router as indexRouter } from './routes/index';
 import { router as usersRouter } from './routes/users';
 
 export const app = express();
+
+mongoose.set("strictQuery", false);
+const mongoDB = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASSWORD}@cluster0.zp8czot.mongodb.net/members_only?retryWrites=true&w=majority`
+  || "mongodb+srv://user:password@cluster0.zp8czot.mongodb.net/members_only?retryWrites=true&w=majority";
+
+async function connectDB() {
+  await mongoose.connect(mongoDB);
+}
+
+connectDB().catch((err) => console.log(err));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
