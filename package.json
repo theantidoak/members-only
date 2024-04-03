@@ -3,17 +3,18 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": "16.x"
+    "node": "^16.x"
   },
   "scripts": {
     "start": "node ./dist/bin/www",
     "dev": "concurrently \"nodemon --exec ts-node ./src/bin/www.ts\" \"npm run scss\"",
-    "build": "npx tsc && ncp src/views dist/views && ncp public dist/public",
+    "build": "rimraf dist && npx tsc && ncp src/views dist/views && ncp public dist/public",
     "scss": "sass --watch src/scss/style.scss public/stylesheets/style.css"
   },
   "dependencies": {
     "@types/cookie-parser": "^1.4.7",
     "@types/debug": "^4.1.12",
+    "@types/luxon": "^3.4.2",
     "@types/morgan": "^1.9.9",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -21,6 +22,7 @@
     "ejs": "^3.1.9",
     "express": "^4.19.2",
     "http-errors": "~1.6.3",
+    "luxon": "^3.4.4",
     "mongoose": "^8.2.4",
     "morgan": "~1.9.1",
     "sass": "^1.72.0"

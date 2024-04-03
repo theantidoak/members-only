@@ -13,11 +13,13 @@ import { router as usersRouter } from './routes/users';
 export const app = express();
 
 mongoose.set("strictQuery", false);
+const mongoDBLocal = "mongodb://127.0.0.1:27017/members_only";
 const mongoDB = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASSWORD}@cluster0.zp8czot.mongodb.net/members_only?retryWrites=true&w=majority`
   || "mongodb+srv://user:password@cluster0.zp8czot.mongodb.net/members_only?retryWrites=true&w=majority";
 
 async function connectDB() {
-  await mongoose.connect(mongoDB);
+  const isLocal = false;
+  await mongoose.connect(isLocal ? mongoDBLocal : mongoDB);
 }
 
 connectDB().catch((err) => console.log(err));
@@ -44,7 +46,7 @@ app.use(function(req: Request, res: Response, next: NextFunction) {
 app.use(function(err: any, req: Request, res: Response, next: NextFunction) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env').toLowerCase() === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
