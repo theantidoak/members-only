@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>Sign Up</h1>
+  <form class="register" action="" method="POST">
+    <div class="register__field">
+      <label class="register__label" for="first_name">First Name</label>
+      <input class="register__input" name="first_name" placeholder="first_name" type="text" required />
+    </div>
+    <div class="register__field">
+      <label class="register__label" for="last_name">Last Name</label>
+      <input class="register__input" name="last_name" placeholder="last_name" type="text" />
+    </div>
+    <div class="register__field">
+      <label class="register__label" for="email">Email</label>
+      <input class="register__input" name="email" placeholder="email" type="email" required />
+    </div>
+    <div class="register__field">
+      <label class="register__label" for="password">Password</label>
+      <input class="register__input" name="password" type="password" required />
+    </div>
+    <div class="register__field">
+      <label class="register__label" for="confirm_password">Confirm Password</label>
+      <input class="register__input" name="confirm_password" type="password" required />
+    </div>
+    <button class="register__button">Sign Up</button>
+  </form>
+</body>
+</html>
