@@ -2,26 +2,22 @@ import passport, { DoneCallback } from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { User } from '../models/user';
 import bcrypt from 'bcryptjs';
-import { validatePassword } from '../utils/validatepassword';
 
-const verifyCallback = (username: string, password: string, done: DoneCallback) => {
+const verifyCallback: any = async (username: string, password: string, done: any) => {
 
-  User.findOne({ username: username })
-      .then((user) => {
-
-          if (!user) { return done(null, false) }
-          
-          const isValid = validatePassword(password, (user as any).hash, (user as any).salt);
-          
-          if (isValid) {
-              return done(null, user);
-          } else {
-              return done(null, false);
-          }
-      })
-      .catch((err) => {   
-          done(err);
-      });
+  try {
+    const user = await User.findOne({ username: username });
+    if (!user) {
+      return done(null, false, { message: "Incorrect username" });
+    };
+    const match = await bcrypt.compare(password, user.hash);
+    if (!match) {
+      return done(null, false, { message: "Incorrect password" })
+    }
+    return done(null, user);
+  } catch(err) {
+    return done(err);
+  };
 
 }
 
@@ -29,7 +25,7 @@ const strategy = new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
-  } as any, verifyCallback as any);
+  }, verifyCallback);
 
 passport.use(strategy);
 

@@ -11,7 +11,7 @@ import passport from 'passport';
 import './config/passport';
 
 import { router as indexRouter } from './routes/index';
-import { router as usersRouter } from './routes/users';
+import { router as userRouter } from './routes/user';
 
 dotenv.config();
 
@@ -57,7 +57,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {
