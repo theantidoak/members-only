@@ -67,8 +67,6 @@ router.post("/register", [
     const error = validationResult(req);
     const userExists = await User.findOne({ email: req.body.email }).exec();
 
-    console.log(userExists);
-
     if (!error.isEmpty() || userExists) {
       const errors = error.array();
      
@@ -96,12 +94,8 @@ router.post("/register", [
           email: req.body.email,
           hash: hashedPassword
         });
-        if (!userExists) {
-          const result = await user.save();
-          res.redirect("/users/login");
-        } else {
-
-        }
+        const result = await user.save();
+        res.redirect("/users/login");
         
       } catch (err) {
         return next(err);
@@ -114,6 +108,6 @@ router.post(
   '/login', 
   passport.authenticate('local', { 
     failureRedirect: '/login-failure', 
-    successRedirect: 'login-success' 
+    successRedirect: '/login-success' 
   })
 );
