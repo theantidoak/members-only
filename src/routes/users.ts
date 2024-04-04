@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import passport from 'passport';
 
 export const router = express.Router();
 
@@ -10,3 +11,17 @@ router.get('/', function(_req: Request, res: Response, next: NextFunction) {
 router.get('/sign-up', function(_req: Request, res: Response, next: NextFunction) {
   res.render('sign-up-form', { title: 'Sign Up' });
 });
+
+router.get('/login', function(_req: Request, res: Response, next: NextFunction) {
+  res.render('login-form', { title: 'Sign Up' });
+});
+
+/* POST */
+
+router.post(
+  '/login', 
+  passport.authenticate('local', { 
+    failureRedirect: '/login-failure', 
+    successRedirect: 'login-success' 
+  })
+);

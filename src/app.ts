@@ -1,16 +1,27 @@
 import createError from 'http-errors';
 import express, { Request, Response, NextFunction } from 'express';
+import session from 'express-session';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import mongoose from 'mongoose';
+import MongoStore from 'connect-mongo'
 import dotenv from 'dotenv';
-dotenv.config();
+import passport from 'passport';
+import './config/passport';
 
 import { router as indexRouter } from './routes/index';
 import { router as usersRouter } from './routes/users';
 
+dotenv.config();
+
 export const app = express();
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, (process.env.NODE_ENV == "DEVELOPMENT" ? '..' : ''), 'public')));
 
 mongoose.set("strictQuery", false);
 const mongoDBLocal = "mongodb://127.0.0.1:27017/members_only";
@@ -28,11 +39,22 @@ connectDB().catch((err) => console.log(err));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, (process.env.NODE_ENV == "DEVELOPMENT" ? '..' : ''), 'public')));
+app.use(session({
+  store: MongoStore.create({ mongoUrl: mongoDB, collectionName: 'sessions' }),
+  secret: process.env.SECRET as string,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24
+  }
+}));
+
+app.use(passport.session());
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
