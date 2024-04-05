@@ -54,10 +54,8 @@ app.use((req, res, next) => {
   res.locals.user = { first_name: '', last_name: '', email: '', membership_status: '', hash: '' };
   if (req.isAuthenticated()) {
     res.locals.user = req.user;
-    next();
-  } else {
-    res.status(401).json({ msg: 'You are not authorized to view this resource' });
   }
+  next();
 });
 
 app.use('/', indexRouter);

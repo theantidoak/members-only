@@ -13,7 +13,17 @@ export const router = express.Router();
 
 /* GET */
 router.get('/', function(req: Request, res: Response, next: NextFunction) {
-  res.render('index', { title: 'Express' });
+  const isLoggedIn = res.locals.user.first_name.length > 0 ? true : false;
+  res.render('index', { title: 'Express', isLoggedIn });
+});
+
+router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 });
 
 router.get('/register', function(_req: Request, res: Response, next: NextFunction) {
