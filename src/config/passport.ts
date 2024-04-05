@@ -3,10 +3,10 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { User } from '../models/user';
 import bcrypt from 'bcryptjs';
 
-const verifyCallback: any = async (username: string, password: string, done: any) => {
+async function verifyCallback(username: string, password: any, done: any) {
 
   try {
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ email: username });
     if (!user) {
       return done(null, false, { message: "Incorrect username" });
     };
@@ -22,9 +22,8 @@ const verifyCallback: any = async (username: string, password: string, done: any
 }
 
 const strategy = new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
-    passReqToCallback: true
   }, verifyCallback);
 
 passport.use(strategy);

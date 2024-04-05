@@ -7,22 +7,22 @@ import { User } from '../models/user';
 
 export const router = express.Router();
 
-/* GET users listing. */
+/* GET */
 router.get('/', function(_req: Request, res: Response, next: NextFunction) {
   res.send('respond with a resource');
 });
 
 router.get('/register', function(_req: Request, res: Response, next: NextFunction) {
-  res.render('register-form', { title: 'Register' });
+  res.render('register-form', { title: 'Register', user: undefined, errors: undefined });
 });
 
 router.get('/login', function(_req: Request, res: Response, next: NextFunction) {
-  res.render('login-form', { title: 'Login' });
+  res.render('login-form', { title: 'Login', user: undefined, errors: undefined });
 });
 
-/* POST */
 
-router.post("/register", [
+/* POST */
+router.post('/register', [
   body("first_name")
     .trim()
     .isLength({ min: 1, max: 50 })
@@ -60,7 +60,9 @@ router.post("/register", [
     .trim()
     .isLength({ min: 1 })
     .withMessage('Confirm password is required.')
-    .custom((confirmPassword, { req }) => confirmPassword === req.body.password)
+    .custom((value, { req }) => {
+      return value === req.body.password;
+    })
     .withMessage('Passwords must match.')
     .escape(),
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -79,35 +81,72 @@ router.post("/register", [
           location: 'body'
         });
       }
+
       res.render("register-form", {
         title: "Register",
         user: req.body,
         errors: errors
       });
+
       return;
-    } else {
-      try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const user = new User({
-          first_name: req.body.first_name,
-          last_name: req.body.last_name ?? '',
-          email: req.body.email,
-          hash: hashedPassword
-        });
-        const result = await user.save();
-        res.redirect("/users/login");
-        
-      } catch (err) {
-        return next(err);
-      }
     }
+
+    try {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const user = new User({
+        first_name: req.body.first_name,
+        last_name: req.body.last_name ?? '',
+        email: req.body.email,
+        hash: hashedPassword
+      });
+      const result = await user.save();
+      res.redirect("/users/login");
+    } catch (err) {
+      return next(err);
+    }
+
   })
 ]);
 
-router.post(
-  '/login', 
-  passport.authenticate('local', { 
-    failureRedirect: '/login-failure', 
-    successRedirect: '/login-success' 
+router.post('/login', [
+  body('email')
+    .trim()
+    .escape(),
+  body('password')
+    .trim()
+    .escape(),
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate('local', function(err: any, user: any, info: any) {
+      const error = validationResult(req);
+
+      if (!error.isEmpty() || err || !user) {
+        const errors = error.array();
+
+        if (err || !user) {
+          errors.push({
+            type: 'field',
+            value: req.body.email,
+            msg: 'Invalid username or password. Please try again.',
+            path: 'email',
+            location: 'body'
+          });
+        }
+
+        res.render("login-form", {
+          title: "Login",
+          user: req.body,
+          errors: errors
+        });
+
+        return;
+      }
+
+      req.login(user, (loginErr: any) => {
+        if (loginErr) {
+          return next(loginErr);
+        }
+        return res.redirect("/");
+      });      
+    })(req, res, next)
   })
-);
+]);

@@ -7,16 +7,23 @@
 </head>
 <body>
   <h1>Login</h1>
-  <form class="register" action="" method="POST">
-    <div class="register__field">
-      <label class="register__label" for="email">Email</label>
-      <input class="register__input" name="email" placeholder="email" type="email" required />
+  <form class="login" action="" method="POST">
+    <div class="login__field">
+      <label class="login__label" for="email">Email</label>
+      <input class="login__input" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
     </div>
-    <div class="register__field">
-      <label class="register__label" for="password">Password</label>
-      <input class="register__input" name="password" type="password" required />
+    <div class="login__field">
+      <label class="login__label" for="password">Password</label>
+      <input class="login__input" name="password" type="password" required />
     </div>
-    <button class="register__button">Login</button>
+    <button class="login__button">Login</button>
   </form>
+  <% if (errors) { %>
+    <ul class="error-items">
+      <% for (let error of errors) { %>
+        <li class="error-item"><%= error.msg %></li>
+      <% } %>
+    </ul>
+  <% } %>
 </body>
 </html>
