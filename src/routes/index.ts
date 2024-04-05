@@ -26,7 +26,7 @@ router.get('/login', function(_req: Request, res: Response, next: NextFunction) 
 
 router.get('/membership', function(req: Request, res: Response, next: NextFunction) {
   const firstName = _.capitalize(res.locals.user.first_name);
-  res.render('membership-form', { title: 'Membership', user: { first_name: firstName }, errors: undefined });
+  res.render('membership-form', { title: 'Membership', user: { first_name: firstName, admin: undefined }, errors: undefined });
 });
 
 
@@ -170,16 +170,17 @@ router.post('/membership', [
     })
     .withMessage('Incorrect Passcode.')
     .escape(),
+  body('admin')
+    .toBoolean(),
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req);
     const firstName = _.capitalize(res.locals.user.first_name);
     const email = res.locals.user.email;
 
     if (!error.isEmpty()) {
-      
       res.render("membership-form", { 
         title: 'Membership', 
-        user: { first_name: firstName },
+        user: { first_name: firstName, admin: req.body.admin },
         errors: error.array()
       });
 
@@ -187,7 +188,8 @@ router.post('/membership', [
     }
 
     try {
-      const result = await User.findOneAndUpdate({ email: email }, { membership_status: 'member' }, { new: true }).exec();
+      const membershipStatus = req.body.admin ? 'admin' : 'member';
+      const result = await User.findOneAndUpdate({ email: email }, { membership_status: membershipStatus }, { new: true }).exec();
       res.redirect("/");
     } catch (err) {
       return next(err);
