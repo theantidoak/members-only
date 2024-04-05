@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>Welcome <%= user.first_name %>!</h1>
+  <p>Become a member by entering the secret passcode below.</p>
+  <form class="passcode" action="" method="POST">
+    <div class="passcode__field">
+      <label class="passcode__label" for="passcode">Passcode: </label>
+      <input class="passcode__input" name="passcode" placeholder="passcode" type="text" required />
+    </div>
+    <button class="passcode__button">Login</button>
+  </form>
+  <% if (errors) { %>
+    <ul class="error-items">
+      <% for (let error of errors) { %>
+        <li class="error-item"><%= error.msg %></li>
+      <% } %>
+    </ul>
+  <% } %>
+</body>
+</html>
