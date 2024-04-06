@@ -1,15 +1,17 @@
-<section class="register">
-  <h2 class="register__form-heading">Create Message</h2>
-  <form class="register__form" action="messages/create" method="POST">
-    <div class="register__field">
-      <label class="register__label" for="title">Title: </label>
-      <input class="register__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
+<div class="message">
+  <h2 class="message__form-heading"><%= form %> message</h2>
+  <form class="message__form" action="messages/<%= form %>" method="POST">
+    <div class="message__field">
+      <label class="message__label" for="title">Title: </label>
+      <input class="message__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
     </div>
-    <div class="register__field">
-      <label class="register__label" for="text">Message: </label>
-      <textarea class="register__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
+    <div class="message__field">
+      <label class="message__label" for="text">Message: </label>
+      <textarea class="message__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
     </div>
-    <button class="register__button">Sign Up</button>
+    <input type="hidden" name="id" value="<%= message === undefined ? '' : message.id %>" />
+    <button type="submit" class="message__button"><%= form %></button>
+    <button type="button" class="message__cancel-button">cancel</button>
   </form>
   <% if (errors) { %>
     <ul class="error-items">
@@ -18,4 +20,4 @@
       <% } %>
     </ul>
   <% } %>
-</section>
+  </div>
