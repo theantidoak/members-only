@@ -8,23 +8,9 @@ import _ from 'lodash';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
 export const router = express.Router();
 
 /* GET */
-router.get('/', function(req: Request, res: Response, next: NextFunction) {
-  const isLoggedIn = res.locals.user.first_name.length > 0 ? true : false;
-  res.render('index', { title: 'Express', isLoggedIn });
-});
-
-router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
 
 router.get('/register', function(_req: Request, res: Response, next: NextFunction) {
   res.render('register-form', { title: 'Register', user: undefined, errors: undefined });
@@ -32,6 +18,16 @@ router.get('/register', function(_req: Request, res: Response, next: NextFunctio
 
 router.get('/login', function(_req: Request, res: Response, next: NextFunction) {
   res.render('login-form', { title: 'Login', user: undefined, errors: undefined });
+});
+
+router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    
+    res.redirect("/");
+  });
 });
 
 router.get('/membership', function(req: Request, res: Response, next: NextFunction) {
@@ -119,6 +115,7 @@ router.post('/register', [
         hash: hashedPassword
       });
       const result = await user.save();
+
       res.redirect("/login");
     } catch (err) {
       return next(err);
@@ -164,7 +161,9 @@ router.post('/login', [
         if (loginErr) {
           return next(loginErr);
         }
-        return res.redirect("/membership");
+
+        const isMember = ['admin', 'member'].find((status) => status === user.membership_status) ? true : false;
+        return isMember ? res.redirect("/") : res.redirect("/membership")
       });      
     })(req, res, next)
   })
@@ -200,6 +199,7 @@ router.post('/membership', [
     try {
       const membershipStatus = req.body.admin ? 'admin' : 'member';
       const result = await User.findOneAndUpdate({ email: email }, { membership_status: membershipStatus }, { new: true }).exec();
+      
       res.redirect("/");
     } catch (err) {
       return next(err);

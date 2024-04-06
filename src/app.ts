@@ -10,7 +10,8 @@ import dotenv from 'dotenv';
 import passport from 'passport';
 import './config/passport';
 
-import { router as indexRouter } from './routes/index';
+import { router as userRouter } from './routes/user';
+import { router as messageRouter } from './routes/message';
 
 dotenv.config();
 
@@ -51,14 +52,22 @@ app.use(session({
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  res.locals.user = { first_name: '', last_name: '', email: '', membership_status: '', hash: '' };
+  res.locals.user = { id: null, first_name: '', last_name: '', email: '', membership_status: '', hash: '', messages: [] };
   if (req.isAuthenticated()) {
     res.locals.user = req.user;
   }
   next();
 });
 
-app.use('/', indexRouter);
+app.get('/', function(req: Request, res: Response, next: NextFunction) {
+  const user = res.locals.user;
+  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  
+  res.render('index', { title: 'Express', isLoggedIn });
+});
+
+app.use('/', userRouter);
+app.use('/', messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {
