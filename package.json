@@ -6,7 +6,7 @@
     "node": "^16.x"
   },
   "scripts": {
-    "dev": "concurrently \"nodemon --exec ts-node ./src/bin/www.ts\" \"webpack --watch --mode development\"",
+    "dev": "concurrently \"rimraf ./public/client ./public/stylesheets\" \"nodemon --exec ts-node ./src/bin/www.ts\" \"webpack --watch --mode development\"",
     "build": "rimraf dist && node scripts/build.js && npx tsc && NODE_ENV=production webpack",
     "start": "node ./dist/bin/www"
   },
@@ -28,7 +28,8 @@
     "morgan": "~1.9.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "sass": "^1.72.0"
+    "sass": "^1.72.0",
+    "webpack-remove-empty-scripts": "^1.0.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -55,7 +56,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4",
     "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-fix-style-only-entries": "^0.6.1"
+    "webpack-cli": "^5.1.4"
   }
 }

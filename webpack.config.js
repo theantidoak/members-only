@@ -1,5 +1,5 @@
 const path = require('path');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -7,7 +7,7 @@ module.exports = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     app: './src/client/index.ts',
-    style: './src/scss/main.scss',
+    style: './src/scss/style.scss',
   },
   output: {
     path: path.resolve(__dirname, isProduction ? 'dist/public' : 'public'),
@@ -32,7 +32,7 @@ module.exports = {
     ],
   },
   plugins: [
-    ...(isProduction ? [new FixStyleOnlyEntriesPlugin()] : []),
+    new RemoveEmptyScriptsPlugin(),
     new MiniCssExtractPlugin({
       filename: 'stylesheets/[name].css',
     }),
