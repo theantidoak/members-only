@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <script src="/client/bundle.js" defer></script>
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>Your Messages</h1>
+  <main class="messages">
+    <button class="messages__create-btn">Create message</button>
+    <% if (!isLoggedIn) { %>
+      <p>You must be logged in to see your messages.</p>
+      <a href="/login">Login</a> or <a href="/register">Register</a>
+    <% } else if (messages !== undefined) { %>
+      <ul class="messages__items">
+        <% for (let message of messages) { %>
+          <%- include('message-card', {message: message}); %>
+        <% } %>
+      </ul>
+    <% } else { %>
+      <p>You haven't created any messages.</p>
+    <% } %>
+  </main>
+</body>
+</html>

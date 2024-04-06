@@ -11,7 +11,7 @@ import passport from 'passport';
 import './config/passport';
 
 import { router as userRouter } from './routes/user';
-import { router as messageRouter } from './routes/message';
+import { router as messageRouter } from './routes/messages';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, (process.env.NODE_ENV == "DEVELOPMENT" ? '..' : ''), 'public')));
+app.use(express.static(path.join(__dirname, (process.env.NODE_ENV == "development" ? '..' : ''), 'public')));
 
 mongoose.set("strictQuery", false);
 const mongoDBLocal = "mongodb://127.0.0.1:27017/members_only";
@@ -67,7 +67,7 @@ app.get('/', function(req: Request, res: Response, next: NextFunction) {
 });
 
 app.use('/', userRouter);
-app.use('/', messageRouter);
+app.use('/messages', messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req: Request, res: Response, next: NextFunction) {

@@ -7,9 +7,9 @@
   },
   "scripts": {
     "start": "node ./dist/bin/www",
-    "dev": "concurrently \"nodemon --exec ts-node ./src/bin/www.ts\" \"npm run scss\"",
-    "build": "rimraf dist && npx tsc && ncp src/views dist/views && ncp public dist/public",
-    "scss": "sass --watch src/scss/style.scss public/stylesheets/style.css"
+    "dev": "concurrently \"nodemon --exec ts-node ./src/bin/www.ts\" \"npm run scss\" \"webpack --watch --mode development\"",
+    "build": "rimraf dist && npx tsc && mkdir -p dist/public dist/views && ncp public dist/public && ncp src/views dist/views && NODE_ENV=production webpack",
+    "scss": "sass --watch src/scss/main.scss public/stylesheets/style.css"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -47,7 +47,10 @@
     "ncp": "^2.0.0",
     "nodemon": "^3.1.0",
     "rimraf": "^5.0.5",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.4",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   }
 }

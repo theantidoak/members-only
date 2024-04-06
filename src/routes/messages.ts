@@ -9,14 +9,29 @@ dotenv.config();
 export const router = express.Router();
 
 /* GET */
-router.get('/message', function(_req: Request, res: Response, next: NextFunction) {
+router.get('/', async function(_req: Request, res: Response, next: NextFunction) {
+  const user = res.locals.user;
+  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  const messages = await Message.find({ user : user.id }).exec();
+
+  res.render('messages', { title: 'Messages', messages: messages, errors: undefined, isLoggedIn: isLoggedIn });
+});
+
+router.get('/create', function(_req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
   const isLoggedIn = user.first_name.length > 0 ? true : false;
   res.render('message-form', { title: 'Create message', message: undefined, errors: undefined, isLoggedIn: isLoggedIn });
 });
 
+router.get('/update', function(_req: Request, res: Response, next: NextFunction) {
+  const user = res.locals.user;
+  const message = Message.find({ 'user.id' : user.id }).exec();
+  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  res.render('message-form', { title: 'Update message', message: message, errors: undefined, isLoggedIn: isLoggedIn });
+});
+
 /* POST */
-router.post('/message', [
+router.post('/create', [
   body('title')
     .trim()
     .isLength({ min: 1 })
@@ -61,7 +76,7 @@ router.post('/message', [
       });
       const result = await message.save();
 
-      res.redirect("/");
+      res.redirect("/messages");
     } catch (err) {
       return next(err);
     }

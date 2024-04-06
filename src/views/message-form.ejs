@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/stylesheets/style.css" />
-  <title><%= title %></title>
-</head>
-<body>
-  <h1>Create message</h1>
-  <form class="register" action="" method="POST">
+<section class="register">
+  <h2 class="register__form-heading">Create Message</h2>
+  <form class="register__form" action="messages/create" method="POST">
     <div class="register__field">
       <label class="register__label" for="title">Title: </label>
       <input class="register__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
@@ -25,8 +18,4 @@
       <% } %>
     </ul>
   <% } %>
-  <% if (message) { %>
-    <a href="/login">Login</a> or <a href="/register">Register</a>
-  <% } %>
-</body>
-</html>
+</section>
