@@ -16,7 +16,7 @@
     <% } else if (messages !== undefined) { %>
       <ul class="messages__items">
         <% for (let message of messages) { %>
-          <%- include('message-card', {message: message}); %>
+          <%- include('message-list-item', {message: message}); %>
         <% } %>
       </ul>
     <% } else { %>

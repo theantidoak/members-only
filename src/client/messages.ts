@@ -13,8 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
   [...deleteMessageBtns].forEach((deleteBtn) => {
     (deleteBtn as any).prop = { btn: deleteBtn, error: undefined }
     deleteBtn.addEventListener('click', handleDeleteBtn);
-  })
+  });
 });
+
+function formsExist() {
+  const forms = document.querySelectorAll('form') as NodeListOf<HTMLFormElement>;
+  return forms.length > 0 ? true : false;
+}
 
 function getFetchHeaders() {
   return {
@@ -70,13 +75,13 @@ async function handleEditBtn(e: Event) {
     card.replaceWith(listItem);
 
     const cancelBtn = formNode.querySelector('.message__cancel-button');
-    cancelBtn?.addEventListener('click', handleCancelUpdateBtn);
+    cancelBtn?.addEventListener('click', handleCancelEditBtn);
   } catch(error) {
     console.error('Error loading update message form: ', error);
   }
 }
 
-async function handleCancelUpdateBtn(e: Event) {
+async function handleCancelEditBtn(e: Event) {
   const cancelBtn = e.currentTarget as HTMLButtonElement;
   const formListItem = cancelBtn.parentElement?.parentElement?.parentElement as HTMLLIElement;
 
@@ -84,13 +89,14 @@ async function handleCancelUpdateBtn(e: Event) {
     const listItemFetch = await fetch(`/messages/card?id=${formListItem.dataset.id}`, getFetchHeaders());
     const listItem = await listItemFetch.text();
     const listItemNode = convertToDomNode(listItem);
-    cancelBtn.removeEventListener('click', handleCancelUpdateBtn);
+    cancelBtn.removeEventListener('click', handleCancelEditBtn);
     formListItem.replaceWith(listItemNode);
 
-    const editMessageBtns = listItemNode.querySelectorAll('.messages__edit-btn');
-    [...editMessageBtns].forEach((btn) => {
-      btn.addEventListener('click', handleEditBtn);
-    });
+    const deleteMessageBtn = document.querySelector('.message__delete-btn');
+    (deleteMessageBtn as any).prop = { btn: deleteMessageBtn, error: undefined };
+    deleteMessageBtn?.addEventListener('click', handleDeleteBtn);
+    const editMessageBtn = listItemNode.querySelector('.messages__edit-btn');
+    editMessageBtn?.addEventListener('click', handleEditBtn);
   } catch(error) {
     console.error('Error loading update message form: ', error);
   }
@@ -106,7 +112,7 @@ async function handleCancelDeleteBtn(e: Event) {
 
 async function handleDeleteMessageBtn(e: Event) {
   const deleteBtn = e.currentTarget as HTMLButtonElement;
-  const section = deleteBtn.parentElement as HTMLDivElement;
+  const section = deleteBtn.parentElement?.parentElement as HTMLDivElement;
   const messageId = section.dataset.id as string;
   const data = JSON.stringify({ id: messageId });
 

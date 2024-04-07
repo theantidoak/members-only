@@ -13,11 +13,11 @@ export const router = express.Router();
 /* GET */
 
 router.get('/register', function(_req: Request, res: Response, next: NextFunction) {
-  res.render('register-form', { title: 'Register', user: undefined, errors: undefined });
+  res.render('user-register-form', { title: 'Register', user: undefined, errors: undefined });
 });
 
 router.get('/login', function(_req: Request, res: Response, next: NextFunction) {
-  res.render('login-form', { title: 'Login', user: undefined, errors: undefined });
+  res.render('user-login-form', { title: 'Login', user: undefined, errors: undefined });
 });
 
 router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
@@ -32,7 +32,7 @@ router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/membership', function(req: Request, res: Response, next: NextFunction) {
   const firstName = _.capitalize(res.locals.user.first_name);
-  res.render('membership-form', { title: 'Membership', user: { first_name: firstName, admin: undefined }, errors: undefined });
+  res.render('user-membership-form', { title: 'Membership', user: { first_name: firstName, admin: undefined }, errors: undefined });
 });
 
 
@@ -97,7 +97,7 @@ router.post('/register', [
         });
       }
 
-      res.render("register-form", {
+      res.render("user-register-form", {
         title: "Register",
         user: req.body,
         errors: errors
@@ -148,7 +148,7 @@ router.post('/login', [
           });
         }
 
-        res.render("login-form", {
+        res.render("user-login-form", {
           title: "Login",
           user: req.body,
           errors: errors
@@ -187,7 +187,7 @@ router.post('/membership', [
     const email = res.locals.user.email;
 
     if (!error.isEmpty()) {
-      res.render("membership-form", { 
+      res.render("user-membership-form", { 
         title: 'Membership', 
         user: { first_name: firstName, admin: req.body.admin },
         errors: error.array()

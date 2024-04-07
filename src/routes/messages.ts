@@ -32,14 +32,14 @@ router.get('/card', checkIfFetch, async function(req: Request, res: Response, ne
   const id = req.query.id ?? '';
   const message = await Message.findOne({ '_id' : id }).exec();
 
-  res.render('message-card', { title: 'Create message', message: message });
+  res.render('message-list-item', { title: 'Create message', message: message });
 });
 
 router.get('/create', checkIfFetch, function(req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
   const isLoggedIn = user.first_name.length > 0 ? true : false;
   
-  res.render('message-form', { title: 'Create message', message: undefined, errors: undefined, isLoggedIn: isLoggedIn, form: 'create' });
+  res.render('message-create-form', { title: 'Create message', message: undefined, errors: undefined, isLoggedIn: isLoggedIn, form: 'create' });
 });
 
 router.get('/update', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
@@ -48,13 +48,13 @@ router.get('/update', checkIfFetch, async function(req: Request, res: Response, 
   const message = await Message.findOne({ '_id' : id }).exec();
   const isLoggedIn = user.first_name.length > 0 ? true : false;
 
-  res.render('message-form', { title: 'Update message', message: message, errors: undefined, isLoggedIn: isLoggedIn, form: 'update' });
+  res.render('message-create-form', { title: 'Update message', message: message, errors: undefined, isLoggedIn: isLoggedIn, form: 'update' });
 });
 
 router.get('/delete', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
   const { error } = req.query;
   const errorMessage = error === undefined || error === 'undefined' ? undefined : error;
-  res.render('delete-message-verification', { title: 'Delete message', error: errorMessage });
+  res.render('message-delete-form', { title: 'Delete message', error: errorMessage });
 });
 
 /* POST */
