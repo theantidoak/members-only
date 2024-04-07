@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const deleteMessageBtns = document.querySelectorAll('.message__delete-btn');
   [...deleteMessageBtns].forEach((deleteBtn) => {
+    console.log(deleteBtn);
     (deleteBtn as any).prop = { btn: deleteBtn, error: undefined }
     deleteBtn.addEventListener('click', handleDeleteBtn);
   });

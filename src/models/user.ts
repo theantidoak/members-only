@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import _ from 'lodash';
 
 const Schema = mongoose.Schema;
 
@@ -13,6 +14,12 @@ export const UserSchema = new Schema({
     enum: ["member", "admin", "user"],
     default: "user",
   }
-})
+});
+
+UserSchema.virtual("name").get(function () {
+  const firstName = _.capitalize(this.first_name);
+  const lastName = this.last_name && this.last_name.length > 0 ? _.capitalize(this.last_name) : '';
+  return `${firstName} ${lastName}`;
+});
 
 export const User = mongoose.model("User", UserSchema);

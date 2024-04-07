@@ -2,17 +2,26 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="/client/app.bundle.js" defer></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <% if (isLoggedIn) { %>
-      <a href="/messages">Messages</a>
-      <a href="/logout">Logout</a>
-      <a href="/membership">Change Membership</a>
-    <% } else { %>
-      <a href="/login">Login</a> or <a href="/register">Register</a>
-    <% } %>
+    <main>
+      <h1><%= title %></h1>
+      <% if (isLoggedIn) { %>
+        <a href="/messages">My account</a>
+      <% } else { %>
+        <a href="/login">Login</a> or <a href="/register">Register</a>
+      <% } %>
+      <% if (messages) { %>
+        <div class="all-messages">
+          <ul class="all-messages__items">
+            <% for (let message of messages) { %>
+              <%- include('message-list-item', {message: message}); %>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
+    </main>
   </body>
 </html>

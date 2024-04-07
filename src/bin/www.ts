@@ -105,7 +105,7 @@ function initializeBrowserSync() {
     files: ["src/", "public/"],
     open: false,
     port: 8085,
-    startPath: "/messages"
+    startPath: "/"
   }, () => {
     onListening();
   });

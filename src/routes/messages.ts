@@ -23,14 +23,17 @@ export const router = express.Router();
 router.get('/', async function(_req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
   const isLoggedIn = user.first_name.length > 0 ? true : false;
-  const messages = await Message.find({ user : user.id }).sort({ time_stamp: -1 }).exec();
+  const messages = await Message.find({ user : user.id }).populate('user').sort({ time_stamp: -1 }).exec();
+
+  console.log('user: ', user);
+  console.log('messages: ', messages);
 
   res.render('messages', { title: 'Messages', messages: messages, errors: undefined, isLoggedIn: isLoggedIn });
 });
 
 router.get('/card', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
   const id = req.query.id ?? '';
-  const message = await Message.findOne({ '_id' : id }).exec();
+  const message = await Message.findOne({ '_id' : id }).populate('user').exec();
 
   res.render('message-list-item', { title: 'Create message', message: message });
 });

@@ -9,11 +9,13 @@
 <body>
   <h1>Your Messages</h1>
   <main class="messages">
-    <button class="messages__create-btn">Create message</button>
     <% if (!isLoggedIn) { %>
       <p>You must be logged in to see your messages.</p>
       <a href="/login">Login</a> or <a href="/register">Register</a>
     <% } else if (messages !== undefined) { %>
+      <a href="/logout">Logout</a>
+      <a href="/membership">Upgrade membership</a>
+      <button class="messages__create-btn">Create message</button>
       <ul class="messages__items">
         <% for (let message of messages) { %>
           <%- include('message-list-item', {message: message}); %>

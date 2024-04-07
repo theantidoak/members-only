@@ -1,9 +1,14 @@
-<% if (message) { %>
-  <li class="messages__item" data-id="<%= message.id %>">
-    <h2 class="messages__title"><%= message.title %></h2>
-    <p class="messages__date"><%= message.date%></p>
-    <p class="messages__text"><%= message.text %></p>
+<li class="messages__item" data-id="<%= message.id %>">
+  <h2 class="messages__title"><%= message.title %></h2>
+  <p class="messages__text"><%= message.text %></p>
+  <% if ( user.id !== null ) { %>
+    <p class="messages__author">Author: <%= message.user.name %></p>
+    <p class="messages__date">Last Edit: <%= message.date %></p>
+  <% } %>
+  <% if ( user.id === message.user.id ) { %> 
     <button class="messages__edit-btn">Edit</button>
+  <% } %>
+  <% if ( user.id === message.user.id || user.membership_status === 'admin') { %>
     <button class="message__delete-btn">Delete</button>
-  </li>
-<% } %>
+  <% } %>
+</li>

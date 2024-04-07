@@ -17,7 +17,7 @@
       <label class="passcode__label" for="admin">Become an admin? </label>
       <input class="passcode__input" name="admin" type="checkbox" <%= user === undefined || !user.admin ? '' : 'checked' %> />
     </div>
-    <button class="passcode__button">Login</button>
+    <button class="passcode__button">Upgrade</button>
   </form>
   <a href="/" aria-label="Go to home page" class="passcode__button">Skip</a>
   <% if (errors) { %>
