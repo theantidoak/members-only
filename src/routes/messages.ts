@@ -6,6 +6,17 @@ import _ from 'lodash';
 import dotenv from 'dotenv';
 dotenv.config();
 
+function checkIfFetch(req: Request, res: Response, next: NextFunction) {
+  const xRequestedWith = req.headers['x-requested-with'];
+  const isXmlHttpRequest = typeof xRequestedWith === 'string' && xRequestedWith.toLowerCase() === 'xmlhttprequest';
+
+  if (!isXmlHttpRequest) {
+    res.redirect('/messages');
+  } else {
+    next();
+  }
+}
+
 export const router = express.Router();
 
 /* GET */
@@ -17,27 +28,33 @@ router.get('/', async function(_req: Request, res: Response, next: NextFunction)
   res.render('messages', { title: 'Messages', messages: messages, errors: undefined, isLoggedIn: isLoggedIn });
 });
 
-router.get('/card', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/card', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
   const id = req.query.id ?? '';
   const message = await Message.findOne({ '_id' : id }).exec();
 
   res.render('message-card', { title: 'Create message', message: message });
 });
 
-router.get('/create', function(_req: Request, res: Response, next: NextFunction) {
+router.get('/create', checkIfFetch, function(req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
   const isLoggedIn = user.first_name.length > 0 ? true : false;
   
   res.render('message-form', { title: 'Create message', message: undefined, errors: undefined, isLoggedIn: isLoggedIn, form: 'create' });
 });
 
-router.get('/update', async function(req: Request, res: Response, next: NextFunction) {
+router.get('/update', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
   const id = req.query.id ?? '';
   const message = await Message.findOne({ '_id' : id }).exec();
   const isLoggedIn = user.first_name.length > 0 ? true : false;
 
   res.render('message-form', { title: 'Update message', message: message, errors: undefined, isLoggedIn: isLoggedIn, form: 'update' });
+});
+
+router.get('/delete', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
+  const { error } = req.query;
+  const errorMessage = error === undefined || error === 'undefined' ? undefined : error;
+  res.render('delete-message-verification', { title: 'Delete message', error: errorMessage });
 });
 
 /* POST */
@@ -150,7 +167,7 @@ router.post('/update', [
         time_stamp: Date.now(),
         user: user.id
       };
-      const updatedApplication = await Message.findByIdAndUpdate(req.body.id, newMessage, { new: true });
+      const updatedMessage = await Message.findByIdAndUpdate(req.body.id, newMessage, { new: true });
 
       res.redirect("/messages");
     } catch (err) {
@@ -159,3 +176,19 @@ router.post('/update', [
 
   })
 ]);
+
+router.post('/delete',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const message = await Message.findByIdAndDelete(req.body.id);
+
+      if (!message) {
+        return res.json({ success: false, message: 'Message not found' });
+      }
+
+      res.json({ success: true, message: 'Message successfully deleted' });
+    } catch (error) {
+      res.json({ success: false, message: 'Error deleting message' });
+    }
+  }
+);

@@ -1,0 +1,9 @@
+<div class="messages__item">
+  <p>Are you sure you want to delete this message?</p>
+  <button class="messages__cancel-verify-btn">Cancel</button>
+  <button class="messages__delete-verify-btn">Delete</button>
+
+  <% if (error !== undefined) { %>
+    <p><%= error %></p>
+  <% } %>
+</div>

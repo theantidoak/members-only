@@ -103,7 +103,7 @@ function initializeBrowserSync() {
   browserSync.init({
     proxy: "localhost:3000",
     files: ["src/", "public/"],
-    open: "local",
+    open: false,
     port: 8085,
     startPath: "/messages"
   }, () => {

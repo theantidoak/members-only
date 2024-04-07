@@ -10,7 +10,7 @@
       <textarea class="message__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
     </div>
     <input type="hidden" name="id" value="<%= message === undefined ? '' : message.id %>" />
-    <button type="submit" class="message__button"><%= form %></button>
+    <button type="submit" class="message__submit-button"><%= form %></button>
     <button type="button" class="message__cancel-button">cancel</button>
   </form>
   <% if (errors) { %>
