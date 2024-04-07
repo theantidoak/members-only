@@ -69,7 +69,7 @@ router.post('/create', [
     .escape(),
   body('text')
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 1, max: 500 })
     .withMessage('Message is required.')
     .escape(),
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

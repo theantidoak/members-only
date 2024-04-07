@@ -8,6 +8,7 @@
     <div class="message__field">
       <label class="message__label" for="text">Message: </label>
       <textarea class="message__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
+      <span class="message__char-count">0 / 500 Characters</span>
     </div>
     <input type="hidden" name="id" value="<%= message === undefined ? '' : message.id %>" />
     <button type="submit" class="message__submit-button"><%= form %></button>

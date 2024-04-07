@@ -44,6 +44,8 @@ async function handleCreateBtn() {
     section.appendChild(formNode);
     main.appendChild(section);
 
+    const textarea = formNode.querySelector("textarea") as HTMLTextAreaElement;
+    textarea.addEventListener('input', handleTextArea);
     const cancelBtn = formNode.querySelector('.message__cancel-button');
     cancelBtn?.addEventListener('click', handleCancelCreateBtn);
   } catch(error) {
@@ -162,4 +164,10 @@ async function handleDeleteBtn(this: { prop: { btn: HTMLButtonElement, error: st
   } catch(error) {
     console.error('Error loading delete message.', error);
   }
+}
+
+function handleTextArea(e: Event) {
+  const textarea = e.currentTarget as HTMLTextAreaElement;
+  const counter = textarea.nextElementSibling as HTMLSpanElement;
+  counter.textContent = `${textarea.value.length} / 500 Characters`;
 }
