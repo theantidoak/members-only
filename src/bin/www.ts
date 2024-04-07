@@ -6,8 +6,10 @@
 
 import http from 'http';
 import debugModule from 'debug';
-
+import browserSync from 'browser-sync';
 import { app } from '../app';
+import dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * Get port from environment and store in Express.
@@ -28,7 +30,13 @@ const server = http.createServer(app);
 
 server.listen(port);
 server.on('error', onError);
-server.on('listening', onListening);
+server.on('listening', () => {
+  if (process.env.NODE_ENV === 'development') {
+    initializeBrowserSync();
+  } else {
+    onListening();
+  }
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -89,4 +97,16 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr?.port;
   debug('Listening on ' + bind);
+}
+
+function initializeBrowserSync() {
+  browserSync.init({
+    proxy: "localhost:3000",
+    files: ["src/", "public/"],
+    open: "local",
+    port: 8085,
+    startPath: "/messages"
+  }, () => {
+    onListening();
+  });
 }

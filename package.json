@@ -6,7 +6,7 @@
     "node": "^16.x"
   },
   "scripts": {
-    "dev": "concurrently \"rimraf ./public/client ./public/stylesheets\" \"nodemon --exec ts-node ./src/bin/www.ts\" \"webpack --watch --mode development --config webpack.client.config.js\" \" browser-sync start -p localhost:3000 -f src/ public/ --port 8000 \"",
+    "dev": "concurrently \"rimraf ./public/client ./public/stylesheets\" \"nodemon --exec ts-node ./src/bin/www.ts\" \"webpack --watch --mode development --config webpack.client.config.js\"",
     "build": "rimraf dist && node scripts/build.js && npx tsc && NODE_ENV=production webpack --config webpack.config.js",
     "start": "node ./dist/bin/www"
   },
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/browser-sync": "^2.29.0",
     "@types/cookie-parser": "^1.4.7",
     "@types/debug": "^4.1.12",
     "@types/express": "^4.17.21",
