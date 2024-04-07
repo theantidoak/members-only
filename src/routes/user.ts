@@ -4,6 +4,7 @@ import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import passport from 'passport';
 import { User } from '../models/user';
+import { Message } from '../models/message';
 import _ from 'lodash';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,6 +12,22 @@ dotenv.config();
 export const router = express.Router();
 
 /* GET */
+
+router.get('/', async function(req: Request, res: Response, next: NextFunction) {
+  const user = res.locals.user;
+  const messages = await Message.find().populate('user').exec();
+  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  
+  res.render('index', { title: 'Members Only', user: user, isLoggedIn: isLoggedIn, messages: messages });
+});
+
+router.get('/account', async function(_req: Request, res: Response, next: NextFunction) {
+  const user = res.locals.user;
+  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  const messages = await Message.find({ user : user.id }).populate('user').sort({ time_stamp: -1 }).exec();
+
+  res.render('messages', { title: 'Messages', messages: messages, errors: undefined, isLoggedIn: isLoggedIn });
+});
 
 router.get('/register', function(_req: Request, res: Response, next: NextFunction) {
   res.render('user-register-form', { title: 'Register', user: undefined, errors: undefined });

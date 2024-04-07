@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const deleteMessageBtns = document.querySelectorAll('.message__delete-btn');
   [...deleteMessageBtns].forEach((deleteBtn) => {
-    console.log(deleteBtn);
     (deleteBtn as any).prop = { btn: deleteBtn, error: undefined }
     deleteBtn.addEventListener('click', handleDeleteBtn);
   });
@@ -87,7 +86,7 @@ async function handleCancelEditBtn(e: Event) {
   const formListItem = cancelBtn.parentElement?.parentElement?.parentElement as HTMLLIElement;
 
   try {
-    const listItemFetch = await fetch(`/messages/card?id=${formListItem.dataset.id}`, getFetchHeaders());
+    const listItemFetch = await fetch(`/messages/message?id=${formListItem.dataset.id}`, getFetchHeaders());
     const listItem = await listItemFetch.text();
     const listItemNode = convertToDomNode(listItem);
     cancelBtn.removeEventListener('click', handleCancelEditBtn);
@@ -106,7 +105,7 @@ async function handleCancelEditBtn(e: Event) {
 async function handleCancelDeleteBtn(e: Event) {
   const cancelBtn = e.currentTarget as HTMLButtonElement;
   cancelBtn.removeEventListener('click', handleCancelCreateBtn);
-  const section = cancelBtn.parentElement as HTMLDivElement;
+  const section = cancelBtn.parentElement?.parentElement as HTMLDivElement;
 
   section.remove();
 }

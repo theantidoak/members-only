@@ -11,7 +11,7 @@ function checkIfFetch(req: Request, res: Response, next: NextFunction) {
   const isXmlHttpRequest = typeof xRequestedWith === 'string' && xRequestedWith.toLowerCase() === 'xmlhttprequest';
 
   if (!isXmlHttpRequest) {
-    res.redirect('/messages');
+    res.redirect('/account');
   } else {
     next();
   }
@@ -20,18 +20,8 @@ function checkIfFetch(req: Request, res: Response, next: NextFunction) {
 export const router = express.Router();
 
 /* GET */
-router.get('/', async function(_req: Request, res: Response, next: NextFunction) {
-  const user = res.locals.user;
-  const isLoggedIn = user.first_name.length > 0 ? true : false;
-  const messages = await Message.find({ user : user.id }).populate('user').sort({ time_stamp: -1 }).exec();
 
-  console.log('user: ', user);
-  console.log('messages: ', messages);
-
-  res.render('messages', { title: 'Messages', messages: messages, errors: undefined, isLoggedIn: isLoggedIn });
-});
-
-router.get('/card', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
+router.get('/message', checkIfFetch, async function(req: Request, res: Response, next: NextFunction) {
   const id = req.query.id ?? '';
   const message = await Message.findOne({ '_id' : id }).populate('user').exec();
 
@@ -112,7 +102,7 @@ router.post('/create', [
       });
       const result = await message.save();
 
-      res.redirect("/messages");
+      res.redirect("/account");
     } catch (err) {
       return next(err);
     }
@@ -172,7 +162,7 @@ router.post('/update', [
       };
       const updatedMessage = await Message.findByIdAndUpdate(req.body.id, newMessage, { new: true });
 
-      res.redirect("/messages");
+      res.redirect("/account");
     } catch (err) {
       return next(err);
     }

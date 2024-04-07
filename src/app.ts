@@ -12,7 +12,6 @@ import './config/passport';
 
 import { router as userRouter } from './routes/user';
 import { router as messageRouter } from './routes/messages';
-import { Message } from './models/message';
 
 dotenv.config();
 
@@ -58,14 +57,6 @@ app.use((req, res, next) => {
     res.locals.user = req.user;
   }
   next();
-});
-
-app.get('/', async function(req: Request, res: Response, next: NextFunction) {
-  const user = res.locals.user;
-  const messages = await Message.find().populate('user').exec();
-  const isLoggedIn = user.first_name.length > 0 ? true : false;
-  
-  res.render('index', { title: 'Members Only', user: user, isLoggedIn: isLoggedIn, messages: messages });
 });
 
 app.use('/', userRouter);
