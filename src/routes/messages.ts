@@ -11,7 +11,7 @@ function checkIfFetch(req: Request, res: Response, next: NextFunction) {
   const isXmlHttpRequest = typeof xRequestedWith === 'string' && xRequestedWith.toLowerCase() === 'xmlhttprequest';
 
   if (!isXmlHttpRequest) {
-    res.redirect('/account');
+    res.redirect('/');
   } else {
     next();
   }
@@ -30,7 +30,7 @@ router.get('/message', checkIfFetch, async function(req: Request, res: Response,
 
 router.get('/create', checkIfFetch, function(req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
-  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
   
   res.render('message-create-form', { title: 'Create message', message: undefined, errors: undefined, isLoggedIn: isLoggedIn, form: 'create' });
 });
@@ -39,7 +39,7 @@ router.get('/update', checkIfFetch, async function(req: Request, res: Response, 
   const user = res.locals.user;
   const id = req.query.id ?? '';
   const message = await Message.findOne({ '_id' : id }).exec();
-  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
 
   res.render('message-create-form', { title: 'Update message', message: message, errors: undefined, isLoggedIn: isLoggedIn, form: 'update' });
 });
@@ -71,7 +71,7 @@ router.post('/create', [
 
     if (!error.isEmpty() || user.id === null) {
       const errors = error.array();
-      const isLoggedIn = user.first_name.length > 0 ? true : false;
+      const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
 
       if (user.id === null) {
         errors.push({
@@ -102,7 +102,7 @@ router.post('/create', [
       });
       const result = await message.save();
 
-      res.redirect("/account");
+      res.redirect(`/#${result.id}`);
     } catch (err) {
       return next(err);
     }
@@ -130,7 +130,7 @@ router.post('/update', [
 
     if (!error.isEmpty() || user.id === null) {
       const errors = error.array();
-      const isLoggedIn = user.first_name.length > 0 ? true : false;
+      const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
 
       if (user.id === null) {
         errors.push({
@@ -160,9 +160,9 @@ router.post('/update', [
         edit_time_stamp: Date.now(),
         user: user.id
       };
-      const updatedMessage = await Message.findByIdAndUpdate(req.body.id, newMessage, { new: true });
+      const result = await Message.findByIdAndUpdate(req.body.id, newMessage, { new: true });
 
-      res.redirect("/account");
+      res.redirect(`/#${req.body.id}`);
     } catch (err) {
       return next(err);
     }

@@ -13,6 +13,7 @@
       <% } else { %>
         <a href="/login">Login</a> or <a href="/register">Register</a>
       <% } %>
+      <h2>Messages</h2>
       <% if (messages) { %>
         <div class="all-messages">
           <ul class="all-messages__items">
@@ -21,6 +22,11 @@
             <% } %>
           </ul>
         </div>
+      <% } else { %>
+        <p>No messages. Be the first.</p>
+      <% } %>
+      <% if (isMember) { %>
+        <button class="messages__create-btn">Create message</button>
       <% } %>
     </main>
   </body>

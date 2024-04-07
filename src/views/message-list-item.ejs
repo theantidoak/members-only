@@ -1,5 +1,5 @@
-<li class="messages__item" data-id="<%= message.id %>">
-  <h2 class="messages__title"><%= message.title %></h2>
+<li class="messages__item" id="<%= message.id %>">
+  <h3 class="messages__title"><%= message.title %></h3>
   <p class="messages__text"><%= message.text %></p>
   <% if ( user.id !== null ) { %>
     <p class="messages__author">Author: <%= message.user.name %></p>

@@ -15,18 +15,20 @@ export const router = express.Router();
 
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
-  const messages = await Message.find().populate('user').exec();
-  const isLoggedIn = user.first_name.length > 0 ? true : false;
+  const messages = await Message.find().populate('user').sort({ time_stamp: -1 }).exec();
+  const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
+  const isMember = ['member', 'admin'].find((status) => status === user.membership_status) ? true : false;
   
-  res.render('index', { title: 'Members Only', user: user, isLoggedIn: isLoggedIn, messages: messages });
+  res.render('index', { title: 'Members Only', user: user, isLoggedIn: isLoggedIn, isMember: isMember, messages: messages });
 });
 
 router.get('/account', async function(_req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
-  const isLoggedIn = user.first_name.length > 0 ? true : false;
-  const messages = await Message.find({ user : user.id }).populate('user').sort({ time_stamp: -1 }).exec();
+  const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
+  const isMember = ['member', 'admin'].find((status) => status === user.membership_status) ? true : false;
+  const messages = await Message.find({ user : user.id }).populate('user').sort({ edit_time_stamp: -1 }).exec();
 
-  res.render('messages', { title: 'Messages', messages: messages, errors: undefined, isLoggedIn: isLoggedIn });
+  res.render('account', { title: 'Account', user: user, messages: messages, errors: undefined, isLoggedIn: isLoggedIn, isMember: isMember });
 });
 
 router.get('/register', function(_req: Request, res: Response, next: NextFunction) {
@@ -133,7 +135,14 @@ router.post('/register', [
       });
       const result = await user.save();
 
-      res.redirect("/login");
+      req.login(user, (loginErr: any) => {
+        if (loginErr) {
+          return next(loginErr);
+        }
+
+        return res.redirect("/membership")
+      });
+
     } catch (err) {
       return next(err);
     }

@@ -63,7 +63,7 @@ async function handleEditBtn(e: Event) {
 
   try {
     const card = editBtn.parentElement as HTMLLIElement;
-    const messageId = card.dataset.id as string;
+    const messageId = card.id as string;
     const formFetch = await fetch(`/messages/update?id=${messageId}`, getFetchHeaders());
     const form = await formFetch.text();
     const formNode = convertToDomNode(form);
@@ -127,7 +127,7 @@ async function handleDeleteMessageBtn(e: Event) {
     });
 
     const result = await deleteItemFetch.json();
-    const listItem = document.querySelector(`li[data-id="${messageId}"]`) as HTMLLIElement;
+    const listItem = document.querySelector(`li#${messageId}`) as HTMLLIElement;
     const deleteMessageBtn = listItem.querySelector('.message__delete-btn') as HTMLButtonElement;
     const prop = { btn: deleteMessageBtn, error: result.message };
 
@@ -151,7 +151,7 @@ async function handleDeleteBtn(this: { prop: { btn: HTMLButtonElement, error: st
   try {
     const main = document.querySelector('main') as HTMLElement;
     const card = deleteBtn.parentElement as HTMLLIElement;
-    const messageId = card.dataset.id as string;
+    const messageId = card.id as string;
     const deleteItemFetch = await fetch(`/messages/delete?error=${error}`, getFetchHeaders());
     const deleteItem = await deleteItemFetch.text();
     const deleteItemNode = convertToDomNode(deleteItem);

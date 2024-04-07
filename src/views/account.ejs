@@ -7,15 +7,23 @@
   <title><%= title %></title>
 </head>
 <body>
-  <h1>Your Messages</h1>
+  <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
   <main class="messages">
     <% if (!isLoggedIn) { %>
-      <p>You must be logged in to see your messages.</p>
-      <a href="/login">Login</a> or <a href="/register">Register</a>
-    <% } else if (messages !== undefined) { %>
-      <a href="/logout">Logout</a>
+      <p>Nothing to see here. You must be a member to create messages</p>
+      <div>
+        <a href="/login">Login</a> or <a href="/register">Register</a>
+      </div>
+    <% } else if (!isMember) { %>
+      <p>Nothing to see here. You must be a member to create messages</p>
       <a href="/membership">Upgrade membership</a>
-      <button class="messages__create-btn">Create message</button>
+      <a href="/logout">Logout</a>
+    <% } else { %>
+      <a href="/membership">Upgrade membership</a>
+      <a href="/logout">Logout</a>
+    <% } %>
+    <h2>Your Messages</h2>
+    <% if (messages !== undefined) { %>
       <ul class="messages__items">
         <% for (let message of messages) { %>
           <%- include('message-list-item', {message: message}); %>
@@ -23,6 +31,7 @@
       </ul>
     <% } else { %>
       <p>You haven't created any messages.</p>
+      <button class="messages__create-btn">Create message</button>
     <% } %>
   </main>
 </body>
