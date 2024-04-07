@@ -3,7 +3,10 @@
   <p class="messages__text"><%= message.text %></p>
   <% if ( user.id !== null ) { %>
     <p class="messages__author">Author: <%= message.user.name %></p>
-    <p class="messages__date">Last Edit: <%= message.date %></p>
+    <p class="messages__date">Created: <%= message.date %></p>
+    <% if (message.date !== message.edit_date) { %>
+      <p class="messages__date">Edited: <%= message.edit_date %></p>
+    <% } %>
   <% } %>
   <% if ( user.id === message.user.id ) { %> 
     <button class="messages__edit-btn">Edit</button>

@@ -157,7 +157,7 @@ router.post('/update', [
       const newMessage = {
         title: req.body.title,
         text: req.body.text,
-        time_stamp: Date.now(),
+        edit_time_stamp: Date.now(),
         user: user.id
       };
       const updatedMessage = await Message.findByIdAndUpdate(req.body.id, newMessage, { new: true });
