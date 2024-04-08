@@ -7,15 +7,12 @@
   </head>
   <body>
     <main>
+      <%- include('header', {isLoggedIn: isLoggedIn}); %>
       <h1><%= title %></h1>
-      <% if (isLoggedIn) { %>
-        <a href="/account">My account</a>
-      <% } else { %>
-        <a href="/login">Login</a> or <a href="/register">Register</a>
-      <% } %>
-      <h2>Messages</h2>
+      
       <% if (messages) { %>
         <div class="all-messages">
+          <h2>Messages</h2>
           <ul class="all-messages__items">
             <% for (let message of messages) { %>
               <%- include('message-list-item', {message: message}); %>
@@ -29,5 +26,6 @@
         <button class="messages__create-btn">Create message</button>
       <% } %>
     </main>
+    <%- include('footer'); %>
   </body>
 </html>

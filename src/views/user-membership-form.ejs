@@ -6,26 +6,30 @@
   <title><%= title %></title>
 </head>
 <body>
-  <h1>Welcome <%= user.first_name %>!</h1>
-  <p>Become a member by entering the secret passcode below.</p>
-  <form class="passcode" action="" method="POST">
-    <div class="passcode__field">
-      <label class="passcode__label" for="passcode">Passcode: </label>
-      <input class="passcode__input" name="passcode" placeholder="passcode" type="text" required />
-    </div>
-    <div class="passcode__field">
-      <label class="passcode__label" for="admin">Become an admin? </label>
-      <input class="passcode__input" name="admin" type="checkbox" <%= user === undefined || !user.admin ? '' : 'checked' %> />
-    </div>
-    <button class="passcode__button">Upgrade</button>
-  </form>
-  <a href="/" aria-label="Go to home page" class="passcode__button">Skip</a>
-  <% if (errors) { %>
-    <ul class="error-items">
-      <% for (let error of errors) { %>
-        <li class="error-item"><%= error.msg %></li>
-      <% } %>
-    </ul>
-  <% } %>
+  <%- include('header', {isLoggedIn: undefined}); %>
+  <main>
+    <h1>Welcome <%= user.first_name %>!</h1>
+    <p>Become a member by entering the secret passcode below.</p>
+    <form class="passcode" action="" method="POST">
+      <div class="passcode__field">
+        <label class="passcode__label" for="passcode">Passcode: </label>
+        <input class="passcode__input" name="passcode" placeholder="passcode" type="text" required />
+      </div>
+      <div class="passcode__field">
+        <label class="passcode__label" for="admin">Become an admin? </label>
+        <input class="passcode__input" name="admin" type="checkbox" <%= user === undefined || !user.admin ? '' : 'checked' %> />
+      </div>
+      <button class="passcode__button">Upgrade</button>
+    </form>
+    <a href="/" aria-label="Go to home page" class="passcode__button">Skip</a>
+    <% if (errors) { %>
+      <ul class="error-items">
+        <% for (let error of errors) { %>
+          <li class="error-item"><%= error.msg %></li>
+        <% } %>
+      </ul>
+    <% } %>
+  </main>
+  <%- include('footer'); %>
 </body>
 </html>

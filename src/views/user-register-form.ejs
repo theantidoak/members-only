@@ -6,36 +6,40 @@
   <title><%= title %></title>
 </head>
 <body>
-  <h1>Sign Up</h1>
-  <form class="register" action="" method="POST">
-    <div class="register__field">
-      <label class="register__label" for="first_name">First Name: </label>
-      <input class="register__input" name="first_name" placeholder="first name" type="text" value="<%= user === undefined ? '' : user.first_name %>" required />
-    </div>
-    <div class="register__field">
-      <label class="register__label" for="last_name">Last Name: </label>
-      <input class="register__input" name="last_name" placeholder="last name" type="text" value="<%= user === undefined ? '' : user.last_name %>" />
-    </div>
-    <div class="register__field">
-      <label class="register__label" for="email">Email: </label>
-      <input class="register__input" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
-    </div>
-    <div class="register__field">
-      <label class="register__label" for="password">Password: </label>
-      <input class="register__input" name="password" type="password" required />
-    </div>
-    <div class="register__field">
-      <label class="register__label" for="confirm_password">Confirm Password: </label>
-      <input class="register__input" name="confirm_password" type="password" required />
-    </div>
-    <button class="register__button">Sign Up</button>
-  </form>
-  <% if (errors) { %>
-    <ul class="error-items">
-      <% for (let error of errors) { %>
-        <li class="error-item"><%= error.msg %></li>
-      <% } %>
-    </ul>
-  <% } %>
+  <%- include('header', {isLoggedIn: undefined}); %>
+  <main>
+    <h1>Sign Up</h1>
+    <form class="register" action="" method="POST">
+      <div class="register__field">
+        <label class="register__label" for="first_name">First Name: </label>
+        <input class="register__input" name="first_name" placeholder="first name" type="text" value="<%= user === undefined ? '' : user.first_name %>" required />
+      </div>
+      <div class="register__field">
+        <label class="register__label" for="last_name">Last Name: </label>
+        <input class="register__input" name="last_name" placeholder="last name" type="text" value="<%= user === undefined ? '' : user.last_name %>" />
+      </div>
+      <div class="register__field">
+        <label class="register__label" for="email">Email: </label>
+        <input class="register__input" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
+      </div>
+      <div class="register__field">
+        <label class="register__label" for="password">Password: </label>
+        <input class="register__input" name="password" type="password" required />
+      </div>
+      <div class="register__field">
+        <label class="register__label" for="confirm_password">Confirm Password: </label>
+        <input class="register__input" name="confirm_password" type="password" required />
+      </div>
+      <button class="register__button">Sign Up</button>
+    </form>
+    <% if (errors) { %>
+      <ul class="error-items">
+        <% for (let error of errors) { %>
+          <li class="error-item"><%= error.msg %></li>
+        <% } %>
+      </ul>
+    <% } %>
+  </main>
+  <%- include('footer'); %>
 </body>
 </html>

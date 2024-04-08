@@ -1,14 +1,148 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #333333;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: #F4F5F7;
+  --primary-color: #034732;
+  --secondary-color: #5C0A2B;
+  --tertiary-color: #DAA520;
+  --background-white: #F4F5F7;
+  --color-black: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding: .25rem 1rem;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 5vw, 1.75rem);
+  color: var(--secondary-color)
+}
+
+h3 {
+  font-size: clamp(1.25rem, 5vw, 1.5rem);
 }
 
 ul, li {
-  margin: 0;
-  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--secondary-color);
 }
 
 .register {
   display: flex;
   flex-direction: column;
   padding: .75rem;
+}
+
+main {
+  padding: calc(52px + 1.5rem) 0 0;
+  min-height: calc(100vh - 69px - 52px);
+
+  > * {
+    width: calc(100% - 5vw);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.header {
+  box-shadow: 0 2px 3px rgba(0, 0, 0, .3);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--background-white);
+
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem clamp(.5rem, 2vw, 1rem);
+  }
+
+  &__home-link {
+    width: 2rem;
+  }
+
+  &__home-link-svg {
+    fill: var(--secondary-color);
+    height: auto;
+    width: auto;
+  }
+
+  &__link {
+    text-decoration: none;
+  }
+}
+
+.footer {
+  width: 100%;
+  padding: 1rem 0;
+  margin: 4rem 0 0;
+  border-top: 1px solid var(--secondary-color);
+  
+  .footer-container {
+    width: 100%;
+  }
+
+  &__copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &__copyright-link {
+    text-decoration: none;
+    width: 1.5rem;
+  }
+
+  &__copyright-svg {
+    fill: var(--secondary-color);
+    width: 100%;
+    height: auto;
+  }
+}
+
+.messages, .all-messages {
+  max-width: 30rem;
+  width: 100%;
+  margin: 0 auto;
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  &__item {
+    padding: clamp(.25rem, 2vw, 1rem);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+  }
+
+  &__title {
+    margin: 0 0 1.75rem;
+    padding: .25rem 0 .5rem;
+    border-bottom: 1px solid var(--secondary-color);
+  }
 }
