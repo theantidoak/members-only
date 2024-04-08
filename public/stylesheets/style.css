@@ -23,10 +23,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
   font-weight: bold;
   margin: 1rem 0;
+  text-transform: capitalize;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-size: clamp(1.75rem, 7vw, 2.25rem);
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
@@ -35,12 +36,12 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.5rem, 5vw, 1.75rem);
+  font-size: clamp(1.5rem, 7vw, 1.75rem);
   color: var(--secondary-color);
 }
 
 h3 {
-  font-size: clamp(1.25rem, 5vw, 1.5rem);
+  font-size: clamp(1.25rem, 6vw, 1.5rem);
 }
 
 ul, li {
@@ -51,6 +52,11 @@ a {
   color: var(--secondary-color);
 }
 
+button {
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
 .register {
   display: flex;
   flex-direction: column;
@@ -59,10 +65,10 @@ a {
 
 main {
   padding: calc(52px + 1.5rem) 0 0;
-  min-height: calc(100vh - 69px - 52px);
+  min-height: calc(100vh - 73px - 52px);
 }
 main > * {
-  width: calc(100% - 5vw);
+  width: calc(100% - 7.5vw);
   margin-left: auto;
   margin-right: auto;
 }
@@ -91,6 +97,22 @@ main > * {
 }
 .header__link {
   text-decoration: none;
+  margin: 0 1rem;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+.header__link::after {
+  display: block;
+  content: "";
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s linear;
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+}
+.header__link:hover::after {
+  border-bottom-color: var(--primary-color-1);
+  transform: scaleX(1);
 }
 
 .footer {
@@ -120,8 +142,30 @@ main > * {
 
 .messages, .all-messages {
   max-width: 30rem;
-  width: 100%;
   margin: 0 auto;
+}
+.messages__heading-container, .all-messages__heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.messages__account-links, .all-messages__account-links {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0.5rem 0 2.5rem;
+}
+.messages__account-links a, .all-messages__account-links a {
+  flex: 1;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  transition: box-shadow linear 0.2s;
+}
+.messages__account-links a:hover, .all-messages__account-links a:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 .messages__items, .all-messages__items {
   display: flex;
@@ -131,9 +175,96 @@ main > * {
 .messages__item, .all-messages__item {
   padding: clamp(0.25rem, 2vw, 1rem);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  max-width: 30rem;
+  background-color: var(--background-white);
 }
 .messages__title, .all-messages__title {
   margin: 0 0 1.75rem;
   padding: 0.25rem 0 0.5rem;
   border-bottom: 1px solid var(--secondary-color);
+}
+.messages__text, .all-messages__text {
+  padding: 0.25rem 0;
+  margin: 0 0 1.5rem;
+}
+.messages__byline, .all-messages__byline {
+  display: grid;
+  row-gap: 0.25rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.messages__author, .all-messages__author {
+  font-size: 14px;
+  grid-area: 1/1/2/2;
+}
+.messages__date, .all-messages__date {
+  font-size: 14px;
+  grid-area: 1/2/2/3;
+  justify-self: end;
+}
+.messages__edit-date, .all-messages__edit-date {
+  font-size: 14px;
+  grid-area: 2/2/3/3;
+  justify-self: end;
+}
+.messages__buttons, .all-messages__buttons {
+  margin: 0.5rem 0 0.25rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+}
+.messages__edit-btn, .messages__delete-btn, .messages__cancel-btn, .messages__submit-btn, .messages__create-btn, .all-messages__edit-btn, .all-messages__delete-btn, .all-messages__cancel-btn, .all-messages__submit-btn, .all-messages__create-btn {
+  font-size: clamp(14px, 3vw, 16px);
+  padding: 0.55rem 1rem;
+  width: 5rem;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: all 0.3s linear;
+}
+.messages__edit-btn:hover, .messages__delete-btn:hover, .messages__cancel-btn:hover, .messages__submit-btn:hover, .messages__create-btn:hover, .all-messages__edit-btn:hover, .all-messages__delete-btn:hover, .all-messages__cancel-btn:hover, .all-messages__submit-btn:hover, .all-messages__create-btn:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+.messages__edit-btn:active, .messages__delete-btn:active, .messages__cancel-btn:active, .messages__submit-btn:active, .messages__create-btn:active, .all-messages__edit-btn:active, .all-messages__delete-btn:active, .all-messages__cancel-btn:active, .all-messages__submit-btn:active, .all-messages__create-btn:active {
+  transition: all 0.1s linear;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.messages__edit-btn, .messages__submit-btn, .all-messages__edit-btn, .all-messages__submit-btn {
+  background-color: var(--primary-color);
+}
+.messages__delete-btn, .all-messages__delete-btn {
+  background-color: var(--secondary-color);
+}
+.messages__cancel-btn, .all-messages__cancel-btn {
+  color: var(--primary-color);
+  background-color: var(--background-white);
+}
+.messages__create-btn, .all-messages__create-btn {
+  width: max-content;
+  background-color: var(--secondary-color);
+}
+.messages__login-prompt, .all-messages__login-prompt {
+  padding: clamp(0.25rem, 2vw, 1rem);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  max-width: 30rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+}
+.messages__login-prompt-question, .all-messages__login-prompt-question {
+  margin: 0 0 1rem;
+}
+
+.form-popup {
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 100;
+  top: calc(52px + 6rem);
 }

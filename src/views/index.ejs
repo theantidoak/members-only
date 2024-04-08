@@ -12,7 +12,12 @@
       
       <% if (messages) { %>
         <div class="all-messages">
-          <h2>Messages</h2>
+          <div class="all-messages__heading-container">
+            <h2>Messages</h2>
+            <% if (isMember) { %>
+              <button class="messages__create-btn">Create New</button>
+            <% } %>
+          </div>
           <ul class="all-messages__items">
             <% for (let message of messages) { %>
               <%- include('message-list-item', {message: message}); %>
@@ -21,9 +26,6 @@
         </div>
       <% } else { %>
         <p>No messages. Be the first.</p>
-      <% } %>
-      <% if (isMember) { %>
-        <button class="messages__create-btn">Create message</button>
       <% } %>
     </main>
     <%- include('footer'); %>

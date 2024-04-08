@@ -10,22 +10,23 @@
   <%- include('header', {isLoggedIn: isLoggedIn}); %>
   <main class="messages">
     <% if (!isLoggedIn) { %>
-      <p>Want to create your own message?</p>
-      <div>
-        <a href="/login">Login</a> or <a href="/register">Register</a>
+      <div class="messages__login-prompt">
+        <p class="messages__login-prompt-question">Want to create your own message?</p>
+        <span class="messages__login-prompt-links"><a href="/login">Login</a> or <a href="/register">Register</a></span>
       </div>
     <% } else { %>
+      <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
+      <div class="messages__account-links">
+        <a href="/membership">Upgrade membership</a>
+        <a href="/logout">Logout</a>
+      </div>
+      <div class="messages__heading-container">
+        <h2>Your Messages</h2>
+        <button class="messages__create-btn">Create New</button>
+      </div>
       <% if (!isMember) { %>
-        <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
-        <p>Nothing to see here. You must be a member to create messages</p>
-        <a href="/membership">Upgrade membership</a>
-        <a href="/logout">Logout</a>
-      <% } else { %>
-        <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
-        <a href="/membership">Upgrade membership</a>
-        <a href="/logout">Logout</a>
+        <p>Nothing to see here. You must be a member to create messages.</p>
       <% } %>
-      <h2>Your Messages</h2>
       <% if (messages !== undefined) { %>
         <ul class="messages__items">
           <% for (let message of messages) { %>
@@ -34,7 +35,6 @@
         </ul>
       <% } else { %>
         <p>You haven't created any messages.</p>
-        <button class="messages__create-btn">Create message</button>
       <% } %>
     <% } %>
   </main>

@@ -20,10 +20,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
   font-weight: bold;
   margin: 1rem 0;
+  text-transform: capitalize;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-size: clamp(1.75rem, 7vw, 2.25rem);
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
@@ -32,12 +33,12 @@ h1 {
 }
 
 h2 {
-  font-size: clamp(1.5rem, 5vw, 1.75rem);
+  font-size: clamp(1.5rem, 7vw, 1.75rem);
   color: var(--secondary-color)
 }
 
 h3 {
-  font-size: clamp(1.25rem, 5vw, 1.5rem);
+  font-size: clamp(1.25rem, 6vw, 1.5rem);
 }
 
 ul, li {
@@ -48,6 +49,11 @@ a {
   color: var(--secondary-color);
 }
 
+button {
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
 .register {
   display: flex;
   flex-direction: column;
@@ -56,10 +62,10 @@ a {
 
 main {
   padding: calc(52px + 1.5rem) 0 0;
-  min-height: calc(100vh - 69px - 52px);
+  min-height: calc(100vh - 73px - 52px);
 
   > * {
-    width: calc(100% - 5vw);
+    width: calc(100% - 7.5vw);
     margin-left: auto;
     margin-right: auto;
   }
@@ -92,6 +98,24 @@ main {
 
   &__link {
     text-decoration: none;
+    margin: 0 1rem;
+    transition: all .2s ease;
+    display: flex;
+    flex-direction: column;
+
+    &::after {
+      display: block;
+      content: '';
+      border-bottom: 2px solid transparent;
+      transition: all .3s linear;
+      transform-origin:  0% 50%;
+      transform: scaleX(0);
+    }
+
+    &:hover::after {
+      border-bottom-color: var(--primary-color-1);
+      transform: scaleX(1);
+    }
   }
 }
 
@@ -126,8 +150,34 @@ main {
 
 .messages, .all-messages {
   max-width: 30rem;
-  width: 100%;
   margin: 0 auto;
+
+  &__heading-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__account-links {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin: .5rem 0 2.5rem;
+
+    a {
+      flex: 1;
+      text-decoration: none;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+      padding: .25rem .5rem;
+      text-align: center;
+      transition: box-shadow linear .2s;
+
+      &:hover {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+      }
+    }
+  }
 
   &__items {
     display: flex;
@@ -138,6 +188,9 @@ main {
   &__item {
     padding: clamp(.25rem, 2vw, 1rem);
     box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+    border-radius: 5px;
+    max-width: 30rem;
+    background-color: var(--background-white);
   }
 
   &__title {
@@ -145,4 +198,103 @@ main {
     padding: .25rem 0 .5rem;
     border-bottom: 1px solid var(--secondary-color);
   }
+
+  &__text {
+    padding: .25rem 0;
+    margin: 0 0 1.5rem;
+  }
+
+  &__byline {
+    display: grid;
+    row-gap: .25rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  &__author {
+    font-size: 14px;
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  &__date {
+    font-size: 14px;
+    grid-area: 1 / 2 / 2 / 3;
+    justify-self: end;
+  }
+
+  &__edit-date {
+    font-size: 14px;
+    grid-area: 2 / 2 / 3 / 3;
+    justify-self: end;
+  }
+
+  &__buttons {
+    margin: .5rem 0 .25rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  &__edit-btn, &__delete-btn, &__cancel-btn, &__submit-btn, &__create-btn {
+    font-size: clamp(14px, 3vw, 16px);
+    padding: .55rem 1rem;
+    width: 5rem;
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+    border: none;
+    transition: all .3s linear;
+
+    &:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, .3);
+    }
+
+    &:active {
+      transition: all .1s linear;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+    }
+  }
+
+  &__edit-btn, &__submit-btn {
+    background-color: var(--primary-color);
+  }
+
+  &__delete-btn {
+    background-color: var(--secondary-color);
+  }
+
+  &__cancel-btn {
+    color: var(--primary-color);
+    background-color: var(--background-white);
+  }
+
+  &__create-btn {
+    width: max-content;
+    background-color: var(--secondary-color);
+  }
+
+  &__login-prompt {
+    padding: clamp(.25rem, 2vw, 1rem);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+    max-width: 30rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+  }
+
+  &__login-prompt-question {
+    margin: 0 0 1rem;
+  }
+}
+
+.form-popup {
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 100;
+  top: calc(52px + 6rem);
 }

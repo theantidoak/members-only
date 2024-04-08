@@ -1,18 +1,20 @@
-<div class="message">
-  <h2 class="message__form-heading"><%= form %> message</h2>
-  <form class="message__form" action="messages/<%= form %>" method="POST">
-    <div class="message__field">
-      <label class="message__label" for="title">Title: </label>
-      <input class="message__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
+<div class="messages__item form-popup">
+  <h3 class="messages__form-heading"><%= form %> message</h3>
+  <form class="messages__form" action="messages/<%= form %>" method="POST">
+    <div class="messages__field">
+      <label class="messages__label" for="title">Title: </label>
+      <input class="messages__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
     </div>
-    <div class="message__field">
-      <label class="message__label" for="text">Message: </label>
-      <textarea class="message__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
-      <span class="message__char-count">0 / 500 Characters</span>
+    <div class="messages__field">
+      <label class="messages__label" for="text">Message: </label>
+      <textarea class="messages__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
+      <span class="messages__char-count">0 / 500 Characters</span>
     </div>
     <input type="hidden" name="id" value="<%= message === undefined ? '' : message.id %>" />
-    <button type="submit" class="message__submit-button"><%= form %></button>
-    <button type="button" class="message__cancel-button">cancel</button>
+    <div class="messages__buttons">
+      <button type="submit" class="messages__submit-btn"><%= form %></button>
+      <button type="button" class="messages__cancel-btn">cancel</button>
+    </div>
   </form>
   <% if (errors) { %>
     <ul class="error-items">
