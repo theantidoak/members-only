@@ -3,11 +3,11 @@
   <form class="form create" action="messages/<%= form %>" method="POST">
     <div class="form__field">
       <label class="form__label" for="title">Title: </label>
-      <input class="form__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
+      <input class="form__input" id="title" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
     </div>
     <div class="form__field">
       <label class="form__label" for="text">Message: </label>
-      <textarea class="form__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
+      <textarea class="form__input" id="text" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
       <span class="form__char-count">0 / 500 Characters</span>
     </div>
     <input type="hidden" name="id" value="<%= message === undefined ? '' : message.id %>" />

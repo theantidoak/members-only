@@ -2,21 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/stylesheets/style.css" />
   <title><%= title %></title>
 </head>
 <body>
   <%- include('header', {isLoggedIn: false}); %>
-  <main>
+  <main id="main">
     <h1>Login</h1>
     <form class="form messages__item" action="" method="POST">
       <div class="form__field">
         <label class="form__label" for="email">Email: </label>
-        <input class="form__input" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
+        <input class="form__input" id="email" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
       </div>
       <div class="form__field">
         <label class="form__label" for="password">Password: </label>
-        <input class="form__input" name="password" type="password" required />
+        <input class="form__input" id="password" name="password" type="password" required />
       </div>
       <div class="form__field">
         <button class="form__btn messages__submit-btn">Login</button>
