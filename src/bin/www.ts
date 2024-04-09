@@ -6,7 +6,6 @@
 
 import http from 'http';
 import debugModule from 'debug';
-import browserSync from 'browser-sync';
 import { app } from '../app';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -32,7 +31,16 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', () => {
   if (process.env.NODE_ENV === 'development') {
-    initializeBrowserSync();
+    const browserSync = require('browser-sync');
+    browserSync.init({
+      proxy: "localhost:3000",
+      files: ["src/", "public/"],
+      open: false,
+      port: 8085,
+      startPath: "/"
+    }, () => {
+      onListening();
+    });
   } else {
     onListening();
   }
@@ -97,16 +105,4 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr?.port;
   debug('Listening on ' + bind);
-}
-
-function initializeBrowserSync() {
-  browserSync.init({
-    proxy: "localhost:3000",
-    files: ["src/", "public/"],
-    open: false,
-    port: 8085,
-    startPath: "/"
-  }, () => {
-    onListening();
-  });
 }

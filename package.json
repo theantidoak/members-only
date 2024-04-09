@@ -32,6 +32,7 @@
     "webpack-remove-empty-scripts": "^1.0.4"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/browser-sync": "^2.29.0",
     "@types/cookie-parser": "^1.4.7",

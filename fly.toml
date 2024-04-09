@@ -1,0 +1,22 @@
+# fly.toml app configuration file generated for members-only-io-small-fire-4997 on 2024-04-09T13:26:13+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'members-only-io-small-fire-4997'
+primary_region = 'cdg'
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
