@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": "^16.x"
+    "node": "16.x"
   },
   "scripts": {
     "dev": "concurrently \"rimraf ./public/client ./public/stylesheets\" \"nodemon --exec ts-node ./src/bin/www.ts\" \"webpack --watch --mode development --config webpack.client.config.js\"",
