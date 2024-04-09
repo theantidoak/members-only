@@ -1,9 +1,11 @@
-<div class="messages">
-  <h2 class="messages__form-heading">Delete message</h2>
-  <form class="messages__form" action="messages/delete" method="POST">
+<div class="messages__item form-popup">
+  <h2 class="form-heading">Delete message</h2>
+  <form class="form delete" action="messages/delete" method="POST">
     <p>Are you sure you want to delete this message?</p>
-    <button type="button" class="messages__cancel-verify-btn">Cancel</button>
-    <button type="button" class="messages__delete-verify-btn">Delete</button>
+    <div class="form__field">
+      <button type="button" class="form__cancel-verify-btn messages__cancel-btn">Cancel</button>
+      <button type="button" class="form__delete-verify-btn messages__delete-btn">Delete</button>
+    </div>
   </form>
   <% if (error !== undefined) { %>
     <p><%= error %></p>

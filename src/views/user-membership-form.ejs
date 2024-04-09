@@ -6,24 +6,28 @@
   <title><%= title %></title>
 </head>
 <body>
-  <%- include('header', {isLoggedIn: undefined}); %>
+  <%- include('header', {isLoggedIn: false}); %>
   <main>
     <h1>Welcome <%= user.first_name %>!</h1>
-    <p>Become a member by entering the secret passcode below.</p>
-    <form class="passcode" action="" method="POST">
-      <div class="passcode__field">
-        <label class="passcode__label" for="passcode">Passcode: </label>
-        <input class="passcode__input" name="passcode" placeholder="passcode" type="text" required />
+    <p class="form-instructions">Become a member by entering the secret passcode below.</p>
+    <form class="form membership messages__item" action="" method="POST">
+      <div class="form__field">
+        <label class="form__label" for="passcode">Passcode: </label>
+        <input class="form__input" name="passcode" placeholder="passcode" type="text" required />
       </div>
-      <div class="passcode__field">
-        <label class="passcode__label" for="admin">Become an admin? </label>
-        <input class="passcode__input" name="admin" type="checkbox" <%= user === undefined || !user.admin ? '' : 'checked' %> />
+      <div class="form__field checkbox">
+        <label class="form__label" for="admin">
+          <input class="form__input" name="admin" type="checkbox" <%= user === undefined || !user.admin ? '' : 'checked' %> />
+          Become an admin? 
+        </label>
       </div>
-      <button class="passcode__button">Upgrade</button>
+      <div class="form__field">
+        <button class="form__btn messages__submit-btn">Upgrade</button>
+        <a class="form__btn messages__cancel-btn" href="/" aria-label="Go to home page" class="form__button">Skip</a>
+      </div>
     </form>
-    <a href="/" aria-label="Go to home page" class="passcode__button">Skip</a>
     <% if (errors) { %>
-      <ul class="error-items">
+      <ul class="error-items messages__item">
         <% for (let error of errors) { %>
           <li class="error-item"><%= error.msg %></li>
         <% } %>

@@ -1,23 +1,23 @@
-<div class="messages__item form-popup">
-  <h3 class="messages__form-heading"><%= form %> message</h3>
-  <form class="messages__form" action="messages/<%= form %>" method="POST">
-    <div class="messages__field">
-      <label class="messages__label" for="title">Title: </label>
-      <input class="messages__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
+<div class="messages__item <%= form === 'create' ? 'form-popup' : '' %>">
+  <h3 class="form-heading"><%= form %> message</h3>
+  <form class="form create" action="messages/<%= form %>" method="POST">
+    <div class="form__field">
+      <label class="form__label" for="title">Title: </label>
+      <input class="form__input" name="title" type="text" value="<%= message === undefined ? '' : message.title %>" required />
     </div>
-    <div class="messages__field">
-      <label class="messages__label" for="text">Message: </label>
-      <textarea class="messages__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
-      <span class="messages__char-count">0 / 500 Characters</span>
+    <div class="form__field">
+      <label class="form__label" for="text">Message: </label>
+      <textarea class="form__input" name="text" type="text" required><%= message === undefined ? '' : message.text %></textarea>
+      <span class="form__char-count">0 / 500 Characters</span>
     </div>
     <input type="hidden" name="id" value="<%= message === undefined ? '' : message.id %>" />
-    <div class="messages__buttons">
-      <button type="submit" class="messages__submit-btn"><%= form %></button>
-      <button type="button" class="messages__cancel-btn">cancel</button>
+    <div class="form__buttons form__field">
+      <button type="submit" class="form__submit-btn messages__submit-btn"><%= form %></button>
+      <button type="button" class="form__cancel-btn messages__cancel-btn">cancel</button>
     </div>
   </form>
   <% if (errors) { %>
-    <ul class="error-items">
+    <ul class="error-items messages__item">
       <% for (let error of errors) { %>
         <li class="error-item"><%= error.msg %></li>
       <% } %>

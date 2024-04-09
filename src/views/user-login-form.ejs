@@ -6,22 +6,24 @@
   <title><%= title %></title>
 </head>
 <body>
-  <%- include('header', {isLoggedIn: undefined}); %>
+  <%- include('header', {isLoggedIn: false}); %>
   <main>
     <h1>Login</h1>
-    <form class="login" action="" method="POST">
-      <div class="login__field">
-        <label class="login__label" for="email">Email: </label>
-        <input class="login__input" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
+    <form class="form messages__item" action="" method="POST">
+      <div class="form__field">
+        <label class="form__label" for="email">Email: </label>
+        <input class="form__input" name="email" placeholder="email" type="email" value="<%= user === undefined ? '' : user.email %>" required />
       </div>
-      <div class="login__field">
-        <label class="login__label" for="password">Password: </label>
-        <input class="login__input" name="password" type="password" required />
+      <div class="form__field">
+        <label class="form__label" for="password">Password: </label>
+        <input class="form__input" name="password" type="password" required />
       </div>
-      <button class="login__button">Login</button>
+      <div class="form__field">
+        <button class="form__btn messages__submit-btn">Login</button>
+      </div>
     </form>
     <% if (errors) { %>
-      <ul class="error-items">
+      <ul class="error-items  messages__item">
         <% for (let error of errors) { %>
           <li class="error-item"><%= error.msg %></li>
         <% } %>

@@ -6,6 +6,8 @@
   margin: 0;
   padding: 0;
   color: #333333;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  line-height: 1.5;
 }
 
 body {
@@ -57,12 +59,6 @@ button {
   text-transform: capitalize;
 }
 
-.register {
-  display: flex;
-  flex-direction: column;
-  padding: 0.75rem;
-}
-
 main {
   padding: calc(52px + 1.5rem) 0 0;
   min-height: calc(100vh - 73px - 52px);
@@ -71,6 +67,73 @@ main > * {
   width: calc(100% - 7.5vw);
   margin-left: auto;
   margin-right: auto;
+}
+
+.form-instructions {
+  max-width: 40rem;
+  margin: 1.5rem auto 0.5rem;
+}
+
+.form {
+  display: grid;
+  row-gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(14rem, 50%)), 1fr));
+}
+.form.membership, .form.create, .form.delete {
+  grid-template-columns: 1fr;
+}
+.form.messages__item {
+  padding: 1.5rem clamp(0.5rem, 5vw, 1.5rem);
+  max-width: 40rem;
+}
+.form__field {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  min-width: 12rem;
+}
+.form__field.checkbox {
+  grid-area: 2/1/3/2;
+  flex-direction: row;
+  justify-content: start;
+}
+.form__field.checkbox > * {
+  display: flex;
+  align-items: center;
+}
+.form__field:last-of-type {
+  grid-column: 1/-1;
+  padding: 1rem 0 0;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.form__field:last-of-type .form__btn.messages__submit-btn {
+  margin: 0;
+}
+.form__label {
+  font-size: 14px;
+  display: flex;
+  gap: 0.25rem;
+}
+.form__input {
+  padding: 0.25rem 0.5rem;
+}
+.form__input[type=checkbox] {
+  width: fit-content;
+  min-width: 0;
+}
+.form__btn.messages__submit-btn {
+  font-size: 14px;
+  margin: 0 auto;
+}
+.form a.form__btn {
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
 }
 
 .header {
@@ -94,6 +157,11 @@ main > * {
   fill: var(--secondary-color);
   height: auto;
   width: auto;
+}
+.header__links {
+  font-size: 14px;
+  display: flex;
+  gap: 0.25rem;
 }
 .header__link {
   text-decoration: none;
@@ -208,8 +276,11 @@ main > * {
   grid-area: 2/2/3/3;
   justify-self: end;
 }
+.messages__val, .all-messages__val {
+  font-weight: bold;
+}
 .messages__buttons, .all-messages__buttons {
-  margin: 0.5rem 0 0.25rem;
+  margin: 0 0 0.25rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
@@ -217,8 +288,8 @@ main > * {
 }
 .messages__edit-btn, .messages__delete-btn, .messages__cancel-btn, .messages__submit-btn, .messages__create-btn, .all-messages__edit-btn, .all-messages__delete-btn, .all-messages__cancel-btn, .all-messages__submit-btn, .all-messages__create-btn {
   font-size: clamp(14px, 3vw, 16px);
-  padding: 0.55rem 1rem;
-  width: 5rem;
+  padding: 0.25rem 1rem;
+  min-width: 5rem;
   color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -257,6 +328,10 @@ main > * {
 }
 .messages__login-prompt-question, .all-messages__login-prompt-question {
   margin: 0 0 1rem;
+}
+
+.error-items {
+  margin: 3rem auto;
 }
 
 .form-popup {

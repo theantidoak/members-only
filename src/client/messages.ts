@@ -37,6 +37,7 @@ async function handleCancelCreateBtn(e: Event) {
   const section = cancelBtn.parentElement?.parentElement?.parentElement?.parentElement as HTMLLIElement;
   const main = document.querySelector('main') as HTMLElement;
 
+  main.parentElement?.removeAttribute('style');
   [...main.children].forEach((child, i, arr) => {
     if (arr.indexOf(child) !== arr.length - 1) {
       child.removeAttribute('style');
@@ -56,6 +57,7 @@ async function handleCreateBtn() {
     section.appendChild(formNode);
     main.appendChild(section);
 
+    main.parentElement?.setAttribute('style', 'overflow: hidden');
     [...main.children].forEach((child, i, arr) => {
       if (arr.indexOf(child) !== arr.length - 1) {
         child.setAttribute('style', 'filter: blur(6px); pointer-events: none');
@@ -64,7 +66,7 @@ async function handleCreateBtn() {
 
     const textarea = formNode.querySelector("textarea") as HTMLTextAreaElement;
     textarea.addEventListener('input', handleTextArea);
-    const cancelBtn = formNode.querySelector('.messages__cancel-btn');
+    const cancelBtn = formNode.querySelector('.form__cancel-btn');
     cancelBtn?.addEventListener('click', handleCancelCreateBtn);
   } catch(error) {
     console.error('Error loading create message form: ', error);
@@ -76,7 +78,7 @@ async function handleEditBtn(e: Event) {
 
   try {
     const card = editBtn.parentElement?.parentElement as HTMLLIElement;
-    const messageId = card.id as string;
+    const messageId = (card.id as string).replace('id-', '');
     const formFetch = await fetch(`/messages/update?id=${messageId}`, getFetchHeaders());
     const form = await formFetch.text();
     const formNode = convertToDomNode(form);
@@ -87,7 +89,7 @@ async function handleEditBtn(e: Event) {
     editBtn.removeEventListener('click', handleEditBtn);
     card.replaceWith(listItem);
 
-    const cancelBtn = formNode.querySelector('.messages__cancel-btn');
+    const cancelBtn = formNode.querySelector('.form__cancel-btn');
     cancelBtn?.addEventListener('click', handleCancelEditBtn);
   } catch(error) {
     console.error('Error loading update message form: ', error);
@@ -118,16 +120,31 @@ async function handleCancelEditBtn(e: Event) {
 async function handleCancelDeleteBtn(e: Event) {
   const cancelBtn = e.currentTarget as HTMLButtonElement;
   cancelBtn.removeEventListener('click', handleCancelCreateBtn);
-  const section = cancelBtn.parentElement?.parentElement as HTMLDivElement;
+  const section = cancelBtn.parentElement?.parentElement?.parentElement as HTMLDivElement;
+  const main = document.querySelector('main') as HTMLElement;
+  main.parentElement?.removeAttribute('style');
+  [...main.children].forEach((child, i, arr) => {
+    if (arr.indexOf(child) !== arr.length - 1) {
+      child.removeAttribute('style');
+    }
+  });
 
   section.remove();
 }
 
 async function handleDeleteMessageBtn(e: Event) {
   const deleteBtn = e.currentTarget as HTMLButtonElement;
-  const section = deleteBtn.parentElement?.parentElement as HTMLDivElement;
+  const section = deleteBtn.parentElement?.parentElement?.parentElement as HTMLDivElement;
   const messageId = section.dataset.id as string;
   const data = JSON.stringify({ id: messageId });
+
+  const main = document.querySelector('main') as HTMLElement;
+  main.parentElement?.removeAttribute('style');
+  [...main.children].forEach((child, i, arr) => {
+    if (arr.indexOf(child) !== arr.length - 1) {
+      child.removeAttribute('style');
+    }
+  });
 
   try {
     const deleteItemFetch = await fetch('/messages/delete', {
@@ -140,7 +157,7 @@ async function handleDeleteMessageBtn(e: Event) {
     });
 
     const result = await deleteItemFetch.json();
-    const listItem = document.querySelector(`li#${messageId}`) as HTMLLIElement;
+    const listItem = document.querySelector(`li#id-${messageId}`) as HTMLLIElement;
     const deleteMessageBtn = listItem.querySelector('.messages__delete-btn') as HTMLButtonElement;
     const prop = { btn: deleteMessageBtn, error: result.message };
 
@@ -164,17 +181,24 @@ async function handleDeleteBtn(this: { prop: { btn: HTMLButtonElement, error: st
   try {
     const main = document.querySelector('main') as HTMLElement;
     const card = deleteBtn.parentElement?.parentElement as HTMLLIElement;
-    const messageId = card.id as string;
+    const messageId = (card.id as string).replace('id-', '');
     const deleteItemFetch = await fetch(`/messages/delete?error=${error}`, getFetchHeaders());
     const deleteItem = await deleteItemFetch.text();
     const deleteItemNode = convertToDomNode(deleteItem);
     deleteItemNode.setAttribute('data-id', messageId);
     main.appendChild(deleteItemNode);
 
-    const cancelMessageBtn = deleteItemNode.querySelector('.messages__cancel-verify-btn');
+    main.parentElement?.setAttribute('style', 'overflow: hidden');
+    [...main.children].forEach((child, i, arr) => {
+      if (arr.indexOf(child) !== arr.length - 1) {
+        child.setAttribute('style', 'filter: blur(6px); pointer-events: none');
+      }
+    });
+
+    const cancelMessageBtn = deleteItemNode.querySelector('.form__cancel-verify-btn');
     cancelMessageBtn?.addEventListener('click', handleCancelDeleteBtn);
 
-    const deleteMessageBtn = deleteItemNode.querySelector('.messages__delete-verify-btn');
+    const deleteMessageBtn = deleteItemNode.querySelector('.form__delete-verify-btn');
     deleteMessageBtn?.addEventListener('click', (e) => { 
       handleDeleteMessageBtn(e);
       deleteBtn.removeEventListener('click', handleDeleteBtn);

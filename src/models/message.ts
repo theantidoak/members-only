@@ -12,11 +12,11 @@ const MessageSchema = new Schema({
 })
 
 MessageSchema.virtual("date").get(function () {
-  return DateTime.fromJSDate(this.time_stamp).toLocaleString(DateTime.DATETIME_SHORT);
+  return DateTime.fromJSDate(this.time_stamp).toLocaleString(DateTime.DATE_SHORT);
 });
 
 MessageSchema.virtual("edit_date").get(function () {
-  return DateTime.fromJSDate(this.edit_time_stamp).toLocaleString(DateTime.DATETIME_SHORT);
+  return DateTime.fromJSDate(this.edit_time_stamp).toLocaleString(DateTime.DATE_SHORT);
 });
 
 export const Message = mongoose.model("Message", MessageSchema);

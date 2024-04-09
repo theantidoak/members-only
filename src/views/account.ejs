@@ -8,35 +8,37 @@
 </head>
 <body>
   <%- include('header', {isLoggedIn: isLoggedIn}); %>
-  <main class="messages">
-    <% if (!isLoggedIn) { %>
-      <div class="messages__login-prompt">
-        <p class="messages__login-prompt-question">Want to create your own message?</p>
-        <span class="messages__login-prompt-links"><a href="/login">Login</a> or <a href="/register">Register</a></span>
-      </div>
-    <% } else { %>
-      <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
-      <div class="messages__account-links">
-        <a href="/membership">Upgrade membership</a>
-        <a href="/logout">Logout</a>
-      </div>
-      <div class="messages__heading-container">
-        <h2>Your Messages</h2>
-        <button class="messages__create-btn">Create New</button>
-      </div>
-      <% if (!isMember) { %>
-        <p>Nothing to see here. You must be a member to create messages.</p>
-      <% } %>
-      <% if (messages !== undefined) { %>
-        <ul class="messages__items">
-          <% for (let message of messages) { %>
-            <%- include('message-list-item', {message: message}); %>
-          <% } %>
-        </ul>
+  <main>
+    <div class="messages">
+      <% if (!isLoggedIn) { %>
+        <div class="messages__login-prompt">
+          <p class="messages__login-prompt-question">Want to create your own message?</p>
+          <span class="messages__login-prompt-links"><a href="/login">Login</a> or <a href="/register">Register</a></span>
+        </div>
       <% } else { %>
-        <p>You haven't created any messages.</p>
+        <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
+        <div class="messages__account-links">
+          <a href="/membership">Upgrade membership</a>
+          <a href="/logout">Logout</a>
+        </div>
+        <div class="messages__heading-container">
+          <h2>Your Messages</h2>
+          <button class="messages__create-btn">Create New</button>
+        </div>
+        <% if (!isMember) { %>
+          <p>Nothing to see here. You must be a member to create messages.</p>
+        <% } %>
+        <% if (messages !== undefined) { %>
+          <ul class="messages__items">
+            <% for (let message of messages) { %>
+              <%- include('message-list-item', {message: message}); %>
+            <% } %>
+          </ul>
+        <% } else { %>
+          <p>You haven't created any messages.</p>
+        <% } %>
       <% } %>
-    <% } %>
+    </div>
   </main>
   <%- include('footer'); %>
 </body>

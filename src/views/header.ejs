@@ -7,10 +7,11 @@
       </svg>
     </a>
     <div class="header__links">
-      <% if (isLoggedIn !== undefined) { %>
-        <a class="header__link" href="/account">My account</a>
+      <% if (isLoggedIn === false) { %>
+        <a class="header__link" href="/login">Login</a>
+        <a class="header__link" href="/register">Register</a>
       <% } else { %>
-        <a class="header__link" href="/login">Login</a> or <a href="/register">Register</a>
+        <a class="header__link" href="/account">My account</a>
       <% } %>
     </div>
   </nav>
