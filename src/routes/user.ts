@@ -16,16 +16,16 @@ export const router = express.Router();
 router.get('/', async function(req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
   const messages = await Message.find().populate('user').sort({ time_stamp: -1 }).exec();
-  const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
-  const isMember = ['member', 'admin'].find((status) => status === user.membership_status) ? true : false;
+  const isLoggedIn = ['user', 'member', 'admin'].includes(user.membership_status) ? true : false;
+  const isMember = ['member', 'admin'].includes(user.membership_status) ? true : false;
   
   res.render('index', { title: 'Members Only', user: user, isLoggedIn: isLoggedIn, isMember: isMember, messages: messages });
 });
 
 router.get('/account', async function(_req: Request, res: Response, next: NextFunction) {
   const user = res.locals.user;
-  const isLoggedIn = ['user', 'member', 'admin'].find((status) => status === user.membership_status) ? true : false;
-  const isMember = ['member', 'admin'].find((status) => status === user.membership_status) ? true : false;
+  const isLoggedIn = ['user', 'member', 'admin'].includes(user.membership_status) ? true : false;
+  const isMember = ['member', 'admin'].includes(user.membership_status) ? true : false;
   const messages = await Message.find({ user : user.id }).populate('user').sort({ edit_time_stamp: -1 }).exec();
 
   res.render('account', { title: 'Account', user: user, messages: messages, errors: undefined, isLoggedIn: isLoggedIn, isMember: isMember });
@@ -50,8 +50,12 @@ router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get('/membership', function(req: Request, res: Response, next: NextFunction) {
-  const firstName = _.capitalize(res.locals.user.first_name);
-  res.render('user-membership-form', { title: 'Membership', user: { first_name: firstName, admin: undefined }, errors: undefined });
+  const user = res.locals.user;
+  const isLoggedIn = ['user', 'member', 'admin'].includes(user.membership_status) ? true : false;
+  const isMember = ['member', 'admin'].includes(user.membership_status) ? true : false;
+  const isAdmin = user.membership_status === 'admin' ? true : false;
+
+  res.render('user-membership-form', { title: 'Membership', user: user, errors: undefined, isLoggedIn: isLoggedIn, isMember: isMember, isAdmin: isAdmin });
 });
 
 
@@ -188,7 +192,7 @@ router.post('/login', [
           return next(loginErr);
         }
 
-        const isMember = ['admin', 'member'].find((status) => status === user.membership_status) ? true : false;
+        const isMember = ['member', 'admin'].includes(user.membership_status) ? true : false;
         return isMember ? res.redirect("/") : res.redirect("/membership")
       });      
     })(req, res, next)
@@ -209,15 +213,15 @@ router.post('/membership', [
     .toBoolean(),
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const error = validationResult(req);
-    const firstName = _.capitalize(res.locals.user.first_name);
     const email = res.locals.user.email;
 
     if (!error.isEmpty()) {
-      res.render("user-membership-form", { 
-        title: 'Membership', 
-        user: { first_name: firstName, admin: req.body.admin },
-        errors: error.array()
-      });
+      const user = res.locals.user;
+      const isLoggedIn = ['user', 'member', 'admin'].includes(user.membership_status) ? true : false;
+      const isMember = ['member', 'admin'].includes(user.membership_status) ? true : false;
+      const isAdmin = user.membership_status === 'admin' ? true : false;
+
+      res.render("user-membership-form", { title: 'Membership', user: user, errors: undefined, isLoggedIn: isLoggedIn, isMember: isMember, isAdmin: isAdmin });
 
       return;
     }
