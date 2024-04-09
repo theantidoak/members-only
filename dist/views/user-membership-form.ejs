@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <title><%= title %></title>
+</head>
+<body>
+  <%- include('header', {isLoggedIn: isLoggedIn}); %>
+  <main id="main">
+    <h1><%= isMember ? 'Hey' : 'Welcome' %> <%= user.first_name %>!</h1>
+    <p class="form-instructions">Become a member or admin by entering the secret passcode below.</p>
+    <form class="form membership messages__item" action="" method="POST">
+      <div class="form__field">
+        <label class="form__label" for="passcode">Passcode: </label>
+        <input class="form__input" id="passcode" name="passcode" type="text" required />
+      </div>
+      <div class="form__field checkbox">
+        <label class="form__label" for="admin">
+          <input class="form__input" id="admin" name="admin" type="checkbox" <%= isAdmin ? 'checked' : '' %> />
+          Become an admin? 
+        </label>
+      </div>
+      <div class="form__field">
+        <button class="form__btn messages__submit-btn">Change</button>
+        <a class="form__btn messages__cancel-btn" href="/" aria-label="Go to home page" class="form__button">Skip</a>
+      </div>
+    </form>
+    <% if (errors) { %>
+      <ul class="error-items messages__item">
+        <% for (let error of errors) { %>
+          <li class="error-item"><%= error.msg %></li>
+        <% } %>
+      </ul>
+    <% } %>
+  </main>
+  <%- include('footer'); %>
+</body>
+</html>

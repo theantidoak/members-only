@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="/client/app.bundle.js" defer></script>
+  </head>
+  <body>
+    <main id="main">
+      <%- include('header', {isLoggedIn: isLoggedIn}); %>
+      <h1><%= title %></h1>
+      
+      <% if (messages) { %>
+        <div class="all-messages">
+          <div class="all-messages__heading-container">
+            <h2>Messages</h2>
+            <% if (isMember) { %>
+              <button class="messages__create-btn">Create New</button>
+            <% } %>
+          </div>
+          <ul class="all-messages__items">
+            <% for (let message of messages) { %>
+              <%- include('message-list-item', {message: message}); %>
+            <% } %>
+          </ul>
+        </div>
+      <% } else { %>
+        <p>No messages. Be the first.</p>
+      <% } %>
+    </main>
+    <%- include('footer'); %>
+  </body>
+</html>

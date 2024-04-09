@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <script src="/client/app.bundle.js" defer></script>
+  <title><%= title %></title>
+</head>
+<body>
+  <%- include('header', {isLoggedIn: isLoggedIn}); %>
+  <main id="main">
+    <div class="messages">
+      <% if (!isLoggedIn) { %>
+        <div class="messages__login-prompt">
+          <p class="messages__login-prompt-question">Want to create your own message?</p>
+          <span class="messages__login-prompt-links"><a href="/login">Login</a> or <a href="/register">Register</a></span>
+        </div>
+      <% } else { %>
+        <h1><%= user === undefined ? '' : user.first_name + '\'s' %> Account</h1>
+        <div class="messages__account-links">
+          <a href="/membership">Upgrade membership</a>
+          <a href="/logout">Logout</a>
+        </div>
+        <% if (isMember) { %>
+          <div class="messages__heading-container">
+            <h2>Your Messages</h2>
+            <button class="messages__create-btn">Create New</button>
+          </div>
+        <% } else { %>
+          <p>Nothing to see here. You must be a member to create messages.</p>
+        <% } %>
+        <% if (messages !== undefined) { %>
+          <ul class="messages__items">
+            <% for (let message of messages) { %>
+              <%- include('message-list-item', {message: message}); %>
+            <% } %>
+          </ul>
+        <% } else { %>
+          <p>You haven't created any messages.</p>
+        <% } %>
+      <% } %>
+    </div>
+  </main>
+  <%- include('footer'); %>
+</body>
+</html>
